@@ -1,17 +1,24 @@
 # 毕业设计管理系统
 ## Build Instructions
 1. 配置环境
-下载安装包：
-访问 <https://nodejs.org/zh-cn/>
-左侧按钮上写着“推荐多数用户使用（LTS）”，点击下载。
-双击下载的安装包，按照提示即可安装。
+    下载安装包：
+
+    访问 <https://nodejs.org/zh-cn/>
+
+    左侧按钮上写着“推荐多数用户使用（LTS）”，点击下载。
+
+    双击下载的安装包，按照提示即可安装。
 1. 安装依赖
-`npm install`
-1. 运行
-`$ENV:DEBUG = "gpms:*"; npm start`
-在浏览器中打开 <http://localhost:3000/>
+
+    `npm install`
+2. 运行
+
+    `$ENV:DEBUG = "gpms:*"; npm start`
+
+    在浏览器中打开 <http://localhost:3000/>
 ## Developer Documentation
 每次修改代码前从远程仓库拉取最新版本，更新文件开发状态：
+
 - [x]表示这个文件在开发中
 - [ ]表示这个文件目前没有人在开发
 - [o]表示这个文件开发完成

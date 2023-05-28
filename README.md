@@ -29,6 +29,60 @@
 此外：
 * 向远程仓库推送前应确保项目目前能够正常编译运行。
 * 产生的目标文件或二进制文件应写在gitignore中。
+
+## SQL Tables
+
+### Account
+* userName
+* password
+* dateCreated
+* accLevel 账号级别：0-管理员，1-教师，2-学生
+
+### Student
+* stuNum
+* stuName
+* stuMajor
+* stuGrade
+* phoneNum
+* email
+* **userName**
+* **topicId**
+
+### Professor
+* profNum
+* profName
+* profCollege 所属学院
+* phoneNum
+* email
+* profile 教师个人简介
+* **userName**
+
+### Administrator
+* AdminNum
+* **userName**
+
+### Topic
+* topicId
+* topicName
+* profile 课题简介
+* postDate 发布日期
+* state 状态：0-未被选择，1-正在进行，2-已结束
+* grades
+* **profNum**
+
+### Paper
+* paperId
+* paperPath
+* grades
+* **stuNum**
+
+### Defense
+* defID
+* instGrades 指导教师评分
+* profGrades 评阅教师评分
+* defDate 答辩日期+时间
+* **topicID**
+
 ## 开发状态
 
 ### /models

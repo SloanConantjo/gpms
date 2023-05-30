@@ -14,13 +14,17 @@ router.post('/', function (req, res, next){
     if (err) {
       throw err;
     } else if (data.length > 0) {
-      // res.redirect('/admin');
-      // res.end('success');
-      // res.render('admin');
+      if (data[0].accLevel == 0) {
+        res.redirect('/admin');
+      } else if (data[0].accLevel == 1) {
+        res.redirect('/professor');
+      } else if (data[0].accLevel == 2) {
+        res.redirect('/student');
+      } else {
+        res.end('failed');
+      }
     } else {
-      res.redirect('/admin');
-      // res.end('failed');
-      // res.render('admin');
+      res.end('failed');
     }
   });
 })

@@ -14,12 +14,14 @@ router.post('/', function (req, res, next){
     if (err) {
       throw err;
     } else if (data.length > 0) {
-      // res.redirect('/admin');
+      req.session.user = req.body;
+      req.session.islogin = true;
+      res.redirect('/admin');
       // res.end('success');
       // res.render('admin');
     } else {
-      res.redirect('/admin');
-      // res.end('failed');
+      // res.redirect('/admin');
+      res.end('failed');
       // res.render('admin');
     }
   });

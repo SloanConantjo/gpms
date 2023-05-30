@@ -8,12 +8,18 @@ var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
 var stuRouter = require('./routes/student');
 var proRouter = require('./routes/professor');
+var session = require('express-session');
 
-const sql = require('./mysql/sql');
+// const sql = require('./mysql/sql');
 
 var app = express();
 
 // sql.c.connect();
+app.use(session({
+  secret: 'abc',
+  resave: false,
+  saveUninitialized: true
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

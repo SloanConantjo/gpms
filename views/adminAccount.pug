@@ -3,7 +3,7 @@ extends admin
 block content
   h1= title
   p Welcome to #{title}
-  
+
   table 
     tr
       th UserName 
@@ -11,4 +11,4 @@ block content
     each acc in data 
       tr 
         th #{acc.userName}
-        th #{acc.accLevel}
+        th #{acc.dateCreated}

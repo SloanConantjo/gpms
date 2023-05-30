@@ -7,5 +7,8 @@ exports.adminAccount = function(req, res) {
 }
 
 exports.adminHome = function(req, res) {
+    if(!req.session.islogin){
+        return res.send({status: 1, msg: 'fail'});
+    }
     res.render('adminHome', {title: 'adminHome'});
 }

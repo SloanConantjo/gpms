@@ -15,10 +15,12 @@ router.post('/', function (req, res, next){
       throw err;
     } else if (data.length > 0) {
       // res.redirect('/admin');
-      res.end('success');
+      // res.end('success');
+      // res.render('admin');
     } else {
-      // res.redirect('/admin');
-      res.end('failed');
+      res.redirect('/admin');
+      // res.end('failed');
+      // res.render('admin');
     }
   });
 })

@@ -6,8 +6,15 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var adminRouter = require('./routes/admin');
+var stuRouter = require('./routes/student');
+var proRouter = require('./routes/professor');
+
+const sql = require('./mysql/sql');
 
 var app = express();
+
+sql.c.connect();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -19,8 +26,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Routers
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/stu', stuRouter);
+app.use('/pro', proRouter);
+app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

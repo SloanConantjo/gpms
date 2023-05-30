@@ -58,7 +58,7 @@
 * **userName**
 
 ### Administrator
-* AdminNum
+* adminNum
 * **userName**
 
 ### Topic
@@ -73,26 +73,58 @@
 ### Paper
 * paperId
 * paperPath
+* uploadDate
 * grades
 * **stuNum**
 
 ### Defense
-* defID
+* defId
 * instGrades 指导教师评分
-* profGrades 评阅教师评分
+* profGrades 评阅教师评分????
 * defDate 答辩日期+时间
 * **topicID**
 
 ## 开发状态
 
-### /models
-[ ]
+### /mysql
+[ ] sql
+[ ] tables
 
 ### /controllers
-[ ]
+[ ] admin
+[ ] student
+[ ] professor
 
 ### /routes
-[ ]
+[ ] admin
+[ ] student
+[ ] professor 
 
-### views
-[ ]
+### /views
+
+#### 登录页面
+[ ] login
+
+#### admin
+[ ] adminHome
+[ ] adminAccount
+
+#### student
+[ ] stuHome
+[ ] stuProfile 管理个人信息，修改密码
+[ ] stuTopicList 选题列表
+ ├──[ ] stuTopicInfo 选题详情页
+ └──[ ] stuTopicSelect
+[ ] stuTopic 显示已选课题信息/进度/成绩
+[ ] stuPaper
+[ ] stuDefense
+
+#### Porfessor
+[ ] profHome
+[ ] proProfile
+[ ] proTopic
+ ├──[ ] proTopicInfo
+ └──[ ] proTopicPost
+[ ] proStudents
+[ ] proPaper
+[ ] proDefense

@@ -1,0 +1,11 @@
+extends admin
+
+block content
+  h1= title
+  p Welcome to #{title}
+
+  ul 
+    each acc in data
+      li user name: #{acc.userName}
+      li user level: #{acc.accLevel}
+    

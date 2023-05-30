@@ -17,9 +17,9 @@ router.post('/', function (req, res, next){
       if (data[0].accLevel == 0) {
         res.redirect('/admin');
       } else if (data[0].accLevel == 1) {
-        res.redirect('/professor');
+        res.redirect('/prof');
       } else if (data[0].accLevel == 2) {
-        res.redirect('/student');
+        res.redirect('/stu');
       } else {
         res.end('failed');
       }

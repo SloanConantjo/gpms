@@ -1,0 +1,16 @@
+extends professor 
+
+block content
+  h1= title
+  p Welcome to #{title}
+  form(action='', method='post')
+    label(for='name') Name:
+    input(type='text', name='name')
+    label(for='age') Age:
+    input(type='number', name='age')
+    label(for='gender') Gender:
+    select(name='gender')
+      option(value='male') Male
+      option(value='female') Female
+    button(type='submit') Submit
+

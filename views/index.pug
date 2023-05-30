@@ -1,5 +1,16 @@
-extends layout
-
-block content
-  h1= title
-  p Welcome to #{title}
+doctype html
+html
+  head
+    title= "毕业设计管理系统"
+    link(rel='stylesheet', href='/stylesheets/common.css')
+    link(rel='stylesheet', href='/stylesheets/index.css')
+  body
+    block content
+      div(class="wrapper")
+        div(class="container")
+          h1 毕业设计管理系统
+          form(class="form" method="post")
+            input(type="text" placeholder="用户名" name='userName')
+            input(type="password" placeholder="密码" name='userPwd')
+            //input(type='submit' id="login-button" value='登录')
+            button(type="submit" id="login-button") 登录

@@ -1,8 +1,10 @@
-let mysql = require("mysql");
+var mysql = require("mysql");
 
-exports.c = mysql.createConnection({
+var db = mysql.createConnection({
     host    : '127.0.0.1',
     user    : 'root',
     password: '123456',
     database: 'gpms'
 });
+db.connect();
+module.exports = db;

@@ -17,6 +17,7 @@ router.post('/', function (req, res, next){
       req.session.user = req.body;
       req.session.islogin = true;
       res.redirect('/admin');
+      // res.redirect('/admin');
       // res.end('success');
       // res.render('admin');
     } else {

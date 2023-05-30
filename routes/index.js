@@ -14,12 +14,15 @@ router.post('/', function (req, res, next){
     if (err) {
       throw err;
     } else if (data.length > 0) {
-      req.session.user = req.body;
+      req.session.user = data[0];
       req.session.islogin = true;
-      res.redirect('/admin');
-      // res.redirect('/admin');
-      // res.end('success');
-      // res.render('admin');
+
+      if (data[0].accLevel === 0)
+        res.redirect('/admin');
+      else if (data[0].accLevel === 1)
+        res.redirect('/prof');
+      else
+        res.redirect('/stu');
     } else {
       // res.redirect('/admin');
       res.end('failed');

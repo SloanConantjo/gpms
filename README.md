@@ -88,16 +88,21 @@
 
 ### /mysql
 [ ] sql
+
 [ ] tables
 
 ### /controllers
 [ ] admin
-[ ] student
+
+[x] student
+
 [ ] professor
 
 ### /routes
 [ ] admin
-[ ] student
+
+[x] student
+
 [ ] professor 
 
 ### /views
@@ -107,24 +112,39 @@
 
 #### admin
 [ ] adminHome
+
 [ ] adminAccount
 
 #### student
-[ ] stuHome
-[ ] stuProfile 管理个人信息，修改密码
-[ ] stuTopicList 选题列表
- ├──[ ] stuTopicInfo 选题详情页
- └──[ ] stuTopicSelect
-[ ] stuTopic 显示已选课题信息/进度/成绩
-[ ] stuPaper
-[ ] stuDefense
+[x] stuHome
+
+[x] stuProfile 管理个人信息，修改密码
+
+[x] stuTopicList 选题列表
+
+ ├──[x] stuTopicInfo 选题详情页
+
+ └──[x] stuTopicSelect
+
+[x] stuTopic 显示已选课题信息/进度/成绩
+
+[x] stuPaper
+
+[x] stuDefense
 
 #### Porfessor
 [ ] profHome
+
 [ ] proProfile
+
 [ ] proTopic
+
  ├──[ ] proTopicInfo
+
  └──[ ] proTopicPost
+
 [ ] proStudents
+
 [ ] proPaper
+
 [ ] proDefense

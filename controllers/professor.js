@@ -1,7 +1,20 @@
-const connection = require("../mysql/sql");
+const db = require("../mysql/sql");
 
 exports.profHome = function(req, res) {
-    res.render('profHome', {title: 'profHome'});
+    if(!req.session.islogin){
+        res.redirect('/');
+    }
+    else if(req.session.user.accLevel !== 1){
+        res.status(403).send('Forbidden');
+    }
+    else
+    {
+        db.query('select * from professor where userName = ?',
+            [req.session.user.userName],function(err, results) {
+                res.render('profHome', {title: 'profHome', error: err, data: results});
+        });
+        // res.render('adminHome', {title: 'adminHome'});
+    }
 }
 
 exports.profPaper = function(req, res) {

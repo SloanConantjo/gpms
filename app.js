@@ -29,7 +29,7 @@ app.use(bodyParser.json());
 // Routers
 app.use('/', indexRouter);
 app.use('/stu', stuRouter);
-app.use('/pro', proRouter);
+app.use('/prof', proRouter);
 app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler

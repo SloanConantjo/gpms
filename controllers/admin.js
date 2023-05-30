@@ -5,3 +5,7 @@ exports.adminAccount = function(req, res) {
         res.render('adminAccount', {title: 'Account List', error: err, data: results});
     });
 }
+
+exports.adminHome = function(req, res) {
+    res.render('adminHome', {title: 'adminHome'});
+}

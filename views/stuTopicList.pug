@@ -4,3 +4,20 @@ block content
   h1= title
   p Welcome to #{title}
 
+  table 
+    tr
+      th 课题号
+      th 课题名称 
+      th 指导教师
+      th 发布日期
+      th 操作
+    each topic in data 
+      tr 
+        th #{topic.topicId}
+        th #{topic.topicName}
+        th #{topic.profName}
+        th #{moment(topic.postDate).format('YYYY-MM-DD')}
+        th
+          form(action='/stu/topic/info/'+ topic.topicId, method='GET')
+            //- input(type='hidden', name='topicId', value=topic.topicId)
+            button(type='submit') 查看

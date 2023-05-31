@@ -1,6 +1,20 @@
 extends student 
 
 block content
-  h1= title
-  p Welcome to #{title}
-
+  if(error)
+    p= error
+  else if(data.length===0)
+    p 出错啦！
+  else
+    h1= data[0].topicName
+    h3 课题简介
+    p= data[0].tProfile
+    h3 指导教师
+    h3= data[0].profName
+    p 个人简介: #{data[0].pProfile}
+    p 所属学院: #{data[0].profCollege}
+    p= data[0].Pprofile
+    p Tel: #{data[0].phoneNum}, E-mail: #{data[0].email}
+  if(!selected)
+    form(action='/stu/topic/select/'+ data[0].topicId, method='GET')
+      button(type='submit') 选择课题

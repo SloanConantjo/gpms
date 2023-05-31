@@ -1,6 +1,33 @@
 extends student 
 
 block content
-  h1= title
-  p Welcome to #{title}
+  if(error)
+    p= error
+  else if(data.length===0)
+    p 出错啦！
+  else
+    h1 课题选择申请
+    h3= data[0].topicName
+    p 课题号 #{data[0].topicId}
+    h5 成员列表:
 
+    form(action='', method='post')
+      label(for='stuNum0') 学号:
+      input(type='text' name='stuNum0')
+      button(type='button' onclick='addStudent()') 添加成员
+      button(type='submit') Submit
+    
+    script.
+      var num = 0;
+      function addStudent() {
+        num++;
+        let form = document.querySelector('form');
+        let input = document.createElement('input');
+        let label = document.createElement('label'); 
+        input.type = 'text';
+        input.name = 'stuNum' + num;
+        label.for = 'stuNum' + num;
+        label.innerHTML = '学号:';
+        form.insertBefore(label, form.lastChild.previousSibling);
+        form.insertBefore(input, form.lastChild.previousSibling);
+      }

@@ -5,6 +5,11 @@ exports.adminAccount = function(req, res) {
         res.render('adminAccount', {title: 'Account List', error: err, data: results});
     });
 }
+exports.adminTopic = function(req, res) {
+    connection.query('SELECT * FROM `Topic` LIMIT 100', function(err, results){
+        res.render('adminTopic', {title: 'Topic List', error: err, data: results});
+    });
+}
 
 exports.adminHome = function(req, res) {
     if(!req.session.islogin){

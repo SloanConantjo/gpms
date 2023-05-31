@@ -145,3 +145,13 @@ form button:hover {
         transform: translateY(-700px) rotate(600deg);
     }
 }
+#alert {
+    display: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    /*height: 300px;*/
+    z-index: 10000;
+}

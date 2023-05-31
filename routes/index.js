@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var db = require('../mysql/sql.js');
 
+// document = window.document;
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index');
@@ -24,9 +26,10 @@ router.post('/', function (req, res, next){
       else
         res.redirect('/stu');
     } else {
-      // res.redirect('/admin');
-      res.end('failed');
-      // res.render('admin');
+      res.render('',{error:true});
+      // res.redirect('/');
+      // res.end('failed');
+
     }
   });
 })

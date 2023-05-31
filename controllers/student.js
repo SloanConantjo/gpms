@@ -1,7 +1,20 @@
 const connection = require("../mysql/sql");
+const db = require("../mysql/sql");
 
 exports.stuHome = function(req, res) {
-    res.render('stuHome', {title: 'stuHome'});
+    if(!req.session.islogin){
+        res.redirect('/');
+    }
+    else if(req.session.user.accLevel !== 2){
+        res.status(403).send('Forbidden');
+    }
+    else
+    {
+        db.query('select * from student where userName = ?',
+            [req.session.user.userName],function(err, results) {
+                res.render('stuHome', {title: 'stuHome', error: err, data: results});
+            });
+    }
 }
 
 exports.stuTopic = function(req, res) {

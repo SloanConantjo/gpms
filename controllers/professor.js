@@ -13,7 +13,6 @@ exports.profHome = function(req, res) {
             [req.session.user.userName],function(err, results) {
                 res.render('profHome', {title: 'profHome', error: err, data: results});
         });
-        // res.render('adminHome', {title: 'adminHome'});
     }
 }
 

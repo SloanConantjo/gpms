@@ -2,6 +2,35 @@ extends admin
 
 block content
   h1= title
+  div(class='col-md-2')
+    button(type="button" class="btn btn-success" id='add_account') 添加账号
+  div(class="container" id='add_window')
+    div(class="form row")
+      form(class="form-horizontal col-md-offset-1")
+        button(type="button" class='btn' id='window_close') &times;
+        h3(class="form-title") 添加账号
+        div(class="col-md-10 col-md-offset-1")
+          div(class="form-group")
+            i(class="fa fa-user" aria-hidden="true")
+            input(class="form-control" type="text" name="username" id="username" placeholder="请输入用户名" required autofocus)
+          div(class="form-group")
+            i(class="fa fa-key" aria-hidden="true")
+            input(class="form-control " type="password" name="password" id="password" placeholder="请输入密码" required)
+          div(class="form-group")
+            label(class="col-sm-3 control-label") 账号类型
+            div(class="col-sm-4")
+              select(id="type" name="type" class="form-select show-tick form-control" aria-label="Default select example")
+                option(value="2") 学生
+                option(value="1") 教师
+                option(value="0") 管理员
+          div(class="form-group")
+            input(type="submit" value="添加" class="btn btn-success pull-right" id='submit_btn')
+        //存在无法关闭的bug
+        div(id="myAlert" class="alert alert-warning")
+          a(href="#" class="close" data-dismiss="alert") &times;
+          strong 警告！
+          p 用户名已存在
+
   div(class="col-md-3 pull-right")
     div(class="input-group")
       input(type="text" class="form-control" placeholder="输入搜索内容")
@@ -22,7 +51,65 @@ block content
           th #{acc.accLevel}
           th #{acc.dateCreated}
           th
-            a(href='#')
+            span(class="btn" id="edit")
               img(src='/image/edit.png')
-            a(href='#')
+            span(class="btn" id="delete" onclick=`deleteUser('${acc.userName}')`)
               img(src='/image/delete.png')
+
+  script.
+    const addBtn = document.getElementById('add_account');
+    const addWindow = document.getElementById('add_window');
+    // const submitBtn = document.getElementById('submit_btn');
+    const userNameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const typeInput = document.getElementById('type');
+    const closeBtn = document.getElementById('window_close');
+
+    addBtn.addEventListener('click', () => {
+      addWindow.style.display = 'block';
+    });
+    closeBtn.addEventListener('click', () => {
+      addWindow.style.display = 'none';
+    });
+    document.querySelector('form').addEventListener('submit', (event) => {
+      event.preventDefault(); // 阻止表单自动提交
+      const username = userNameInput.value;
+      const password = passwordInput.value;
+      const type = typeInput.value;
+      const data = {
+        username: username,
+        password: password,
+        type: type
+      };
+      // 使用fetch API提交表单数据
+      fetch('account', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then((response) => {
+        if (response.ok) {
+          addWindow.style.display = 'none';
+          window.location.reload();
+        }
+      })
+      .catch((error) => {
+        //存在无法捕捉error的bug
+        const myAlert = document.getElementById('myAlert');
+        myAlert.style.display = "block";
+      });
+    });
+    function deleteUser(username) {
+      fetch(`account/${username}`, {
+        method: 'DELETE',
+      })
+      .then((response) => {
+        if (response.ok) {
+          window.location.reload();
+        }
+      })
+      .catch((error) => {
+      });
+    }

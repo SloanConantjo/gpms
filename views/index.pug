@@ -7,9 +7,9 @@ html
     link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
   body
     block content
-      //div(id="alert" class="alert alert-warning")
-      //  a(href="/" class="close" data-dismiss="alert") &times;
-      //  strong 用户名或密码错误
+      div(id="alert" class="alert alert-warning")
+        a(href="/" class="close" data-dismiss="alert") &times;
+        strong 用户名或密码错误
 
       div(class="wrapper")
         div(class="container")
@@ -18,22 +18,12 @@ html
             input(type="text" placeholder="用户名" name='userName')
             input(type="password" placeholder="密码" name='userPwd')
             button(type="submit" id="login-button") 登录
-
-    //script.
-    //  document.addEventListener("DOMContentLoaded", function(event) {
-    //    const alert = document.getElementById('alert');
-    //    const close = document.querySelector('#alert .close');
-    //
-    //    function closeAlert() {
-    //      alert.style.display = 'none';
-    //    }
-    //
-    //    if (error) {
-    //      console.log('错误');
-    //      alert.style.display = 'block';
-    //      close.addEventListener('click', closeAlert);
-    //    }
-    //    else {
-    //      alert.style.display = 'none';
-    //    }
-    //  });
+    script.
+      const error = #{error};
+      const alert = document.getElementById('alert');
+      if (error) {
+        alert.style.display = 'block';
+      }
+      else {
+        alert.style.display = 'none';
+      }

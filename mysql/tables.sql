@@ -65,6 +65,7 @@ CREATE TABLE `Student`(
 DROP TABLE `Paper`;
 CREATE TABLE `Paper`(
     `paperId` INT(10) AUTO_INCREMENT,
+    `paperName` VARCHAR(50),
     `paperPath` VARCHAR(50),
     `uploadDate`DATE DEFAULT (curdate()),
     `grades` INT,

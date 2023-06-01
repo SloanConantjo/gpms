@@ -11,8 +11,16 @@ insert into student value('1111','梅友仁','计算机科学与技术','3','136
 
 select * from topic,professor where topic.profNum = professor.profNum AND topic.state = 0;
 
-select topic.topicId, topic.topicName, topic.profile as tProfile, 
-topic.postDate, professor.profName, professor.profile as pProfile,
-professor.email, professor.phoneNum, professor.profCollege
-from topic,professor 
-where topic.profNum = professor.profNum AND topic.topicId = 2;
+select * from paper,(select student.stuNum as stuNum, student.userName, student.stuName from topic, student where 
+student.topicId = topic.topicId and student.userName = 'c1')as stu
+where stu.stuNum = paper.stuNum
+order by paper.uploadDate desc limit 1;
+
+select * from topic,student 
+where student.userName = 'c1' 
+AND student.topicId = topic.topicId;
+
+update paper set paperPath = 'adasfa',uploadDate = curdate() where paperId = 1;
+
+insert into paper(paperName,stuNum) value('asada','1111');
+ select @@IDENTITY;

@@ -1,6 +1,11 @@
 extends student 
 
 block content
-  h1= title
-  p Welcome to #{title}
+  if(paper.length > 0)
+    h2= paper[0].paperName
+    form(action="/stu/paper/"+paper[0].paperId, method="post", enctype="multipart/form-data")
+      label(for="file") 上传文档
+      input(type="file" name="file")
+      input(type="submit" value="upload")  
+    iframe(src=paper[0].paperPath, frameborder="0", height="800" width="100%") 
 

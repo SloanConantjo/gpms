@@ -1,6 +1,13 @@
 extends student 
 
 block content
-  h1= title
-  p Welcome to #{title}
-
+  h1 我的课题
+  if(topic.length > 0)
+    h2= topic[0].topicName
+    h3 课题简介
+    p= topic[0].profile
+    h3 成绩
+    p= topic[0].grades
+    if(paper.length > 0)
+      h3 最近上传文档
+      p= paper[0].paperName

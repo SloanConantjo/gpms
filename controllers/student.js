@@ -115,7 +115,6 @@ exports.stuPaperNew = function(req, res) {
     }
 }
 
-
 exports.stuPaperUpload = function(req, res) {
     if(!req.session.islogin){
         res.redirect('/');

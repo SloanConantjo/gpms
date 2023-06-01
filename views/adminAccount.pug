@@ -18,10 +18,10 @@ block content
     thbody
       each acc in data
         tr
-          th #{acc.userName}
-          th #{acc.accLevel}
-          th #{acc.dateCreated}
-          th
+          td #{acc.userName}
+          td #{acc.accLevel}
+          td #{moment(acc.dateCreated).format('YYYY-MM-DD')}
+          td
             a(href='#')
               img(src='/image/edit.png')
             a(href='#')

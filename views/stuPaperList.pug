@@ -1,0 +1,32 @@
+extends student 
+
+block content
+  h1 文档管理
+  h6 创建新文档
+  form(action="/stu/paper/new", method="post")
+    label(for="paper") 名称
+    input(type="text" name="paper")
+    input(type="submit" value="创建")  
+
+  if(papers.length > 0)
+    table(class='table table-striped') 
+      thead
+        tr
+          th 文档ID
+          th 文档名称
+          th 上传学生 
+          th 上传日期
+          th 操作
+      thbody
+        each paper in papers 
+          tr 
+            td #{paper.paperId}
+            td #{paper.paperName}
+            td #{paper.stuName}
+            td #{moment(paper.uploadDate).format('YYYY-MM-DD')}
+            td
+              if(userName === paper.userName)
+                a(href='/stu/paper/' + paper.paperId)
+                  img(src='/image/edit.png')
+              a(href='#')
+                img(src='/image/delete.png')

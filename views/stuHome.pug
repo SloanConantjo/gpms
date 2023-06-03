@@ -2,19 +2,22 @@ extends student
 
 block content
 
-  div(id = 'hello')
-  div(id = 'time')
+  div.hello(id = 'hello')
+  div.time(id = 'time')
 
+  hr
   if (topic.length > 0)
     h4 我的课题: #{topic[0].topicName}
   else 
     h4 暂未选课
 
+  hr
   if (paper.length > 0)
     h4 最近上传文档: #{paper[0].paperName}
   else 
     h4 暂无已上传文档
   
+  hr
   if (defense.length === 0)
     h4 暂无答辩信息
   else

@@ -4,25 +4,26 @@ html
     title= title
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1')
-    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/common.css')
+    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
   body
-    div(class='container-fluid')
-      div(class='row')
-        div(class='col-sm-2')
-          block sidebar
-              ul(class='sidebar-nav')
-                li
-                  a(href='/stu') 首页
-                li 
-                  a(href='/stu/topic') 我的课题 
-                li 
-                  a(href='/stu/topic/list') 课题选择 
-                li 
-                  a(href='/stu/paper') 文档管理 
-                li 
-                  a(href='/stu/defense') 答辩信息
-                li 
-                  a(href='/stu/profile') 个人中心
-        div(class='col-sm-10')
-          block content
+    div(class='topBar')
+      h4 毕业设计管理系统
+    div(class='cc')
+      div(class='col-bar')
+        block sidebar
+            ul(class='sidebar')
+              li
+                a(href='/stu') 首页
+              li 
+                a(href='/stu/topic') 我的课题 
+              li 
+                a(href='/stu/topic/list') 课题选择 
+              li 
+                a(href='/stu/paper') 文档管理 
+              li 
+                a(href='/stu/defense') 答辩信息
+              li 
+                a(href='/stu/profile') 个人中心
+      div(class='col-sm-10')
+        block content

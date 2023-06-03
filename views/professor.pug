@@ -6,24 +6,25 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1')
     link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/common.css')
-    link(rel='stylesheet', href='/stylesheets/professor.css')
+    //- link(rel='stylesheet', href='/stylesheets/professor.css')
   body
-    div(class='container-fluid')
-      div(class='row')
-        div(class='col-sm-2')
-          block sidebar
-              ul(class='sidebar-nav')
-                li
-                  a(href='/prof') Home
-                li 
-                  a(href='/prof/topic') Topic 
-                li 
-                  a(href='/prof/students') Student 
-                li 
-                  a(href='/prof/paper') Paper 
-                li 
-                  a(href='/prof/defense') Defense
-                li 
-                  a(href='/prof/profile') Profile
-        div(class='col-sm-10')
-          block content
+    div(class='topBar')
+      h4 毕业设计管理系统
+    div(class='cc')
+      div(class='col-bar')
+        block sidebar
+            ul(class='sidebar')
+              li
+                a(href='/prof') Home
+              li 
+                a(href='/prof/topic') Topic 
+              li 
+                a(href='/prof/students') Student 
+              li 
+                a(href='/prof/paper') Paper 
+              li 
+                a(href='/prof/defense') Defense
+              li 
+                a(href='/prof/profile') Profile
+      div(class='col-sm-10')
+        block content

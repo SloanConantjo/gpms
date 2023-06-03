@@ -17,17 +17,18 @@ html
     script(src="https://code.highcharts.com/highcharts.js")
     script(src="https://code.highcharts.com/modules/data.js")
   body
-    div(class='container-fluid')
-      div(class='row')
-        div(class='col-sm-2')
-          block sidebar
-            ul(class='sidebar-nav')
-              li
-                a(href='/admin') Home
-              li
-                a(href='/admin/account') Account
-              li
-                a(href='/admin/topic') Topic
+    div(class='topBar')
+      h4 毕业设计管理系统
+    div(class='cc')
+      div(class='col-bar')
+        block sidebar
+          ul(class='sidebar')
+            li
+              a(href='/admin') Home
+            li
+              a(href='/admin/account') Account
+            li
+              a(href='/admin/topic') Topic
 
-        div(class='col-sm-10')
-          block content
+      div(class='col-sm-10')
+        block content

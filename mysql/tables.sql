@@ -78,6 +78,7 @@ DROP TABLE `Defense`;
 CREATE TABLE `Defense`(
     `defId` INT(10) AUTO_INCREMENT,
     `defDate`DATETIME,
+    `defAddress` VARCHAR(50),
     `instGrades` INT,
     `topicId` INT(10),
     PRIMARY KEY (`defId`),

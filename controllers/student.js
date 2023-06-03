@@ -16,10 +16,45 @@ exports.stuHome = function(req, res) {
     }
     else
     {
-        db.query('select * from student where userName = ?',
-            [req.session.user.userName],function(err, results) {
-                res.render('stuHome', {title: 'stuHome', error: err, data: results});
+        
+        let topicQuery = 'select * from topic,student ' + 
+            'where student.userName = ? '+ 
+            'AND student.topicId = topic.topicId;';
+        let paperQuery = 'select * from paper,(select student.stuNum as stuNum, student.userName '+
+            'from topic, student where '+
+            'student.topicId = topic.topicId and student.userName = ?)as stu '+
+            'where stu.stuNum = paper.stuNum ' +
+            'order by paper.uploadDate desc limit 1;';
+        let topicResult, paperResult;
+
+        db.query(topicQuery,[req.session.user.userName],
+            function(err, results) {
+                topicResult = results;
+                // console.log(results);
             });
+        db.query(paperQuery,[req.session.user.userName], 
+            function(err, results) {
+                paperResult = results;
+                // console.log(results);
+            });
+        
+        db.query('select * from defense,student where defense.topicId = student.topicId AND student.userName = ?', 
+        [req.session.user.userName],function(err, results) {
+            let daysLeft;
+            if(results.length === 1)
+            {
+                let dateNow = new Date();
+                daysLeft = Math.ceil(((results[0].defDate - dateNow)/(1000 * 60 * 60 * 24)));
+            }
+            else if(results.length === 2)
+            {
+                let dateNow = new Date();
+                daysLeft = Math.ceil(((results[1].defDate - dateNow)/(1000 * 60 * 60 * 24)));
+            }
+            res.render('stuHome', {error: err, defense: results, moment: moment, 
+                daysLeft: daysLeft, topic: topicResult, paper: paperResult});
+        });
+    
     }
 }
 
@@ -131,7 +166,57 @@ exports.stuPaperUpload = function(req, res) {
 }
 
 exports.stuProfile = function(req, res) {
-    res.render('stuProfile', {title: 'stuProfile'});
+    if(!req.session.islogin){
+        res.redirect('/');
+    }
+    else if(req.session.user.accLevel !== 2){
+        res.status(403).send('Forbidden');
+    }
+    else
+    {
+        accQuery = 'select * from student, account '+
+        'where student.userName = account.userName and account.userName = ?';
+        db.query(accQuery, [req.session.user.userName], function(err, results) {
+            res.render('stuProfile', {profile: results, moment: moment});
+        });
+    }
+}
+
+exports.stuProfilePost = function(req, res) {
+    if(!req.session.islogin){
+        res.redirect('/');
+    }
+    else if(req.session.user.accLevel !== 2){
+        res.status(403).send('Forbidden');
+    }
+    else
+    {
+        if(req.params.id === '0')
+        {
+            db.query('update student set phoneNum= ?, email= ? where userName = ?', 
+            [req.body.phone, req.body.email, req.session.user.userName], function(){});
+
+            res.redirect('/');    
+        }
+        else if(req.params.id === '1')
+        {
+            accQuery = 'select * from student, account '+
+            'where student.userName = account.userName and account.userName = ?';
+            
+            db.query(accQuery, [req.session.user.userName], function(err, results) {
+                if(req.body.password0 !== results[0].password)
+                {
+                    res.redirect('stu/profile');
+                }
+                else
+                {
+                    db.query('update account set password = ? where userName = ?', 
+                        [req.body.password1, req.session.user.userName], function(){});
+                    res.redirect('/');    
+                }
+            });
+        }
+    }
 }
 
 exports.stuTopicInfo = function(req, res) {
@@ -221,6 +306,29 @@ exports.stuTopicSelectPost = function(req, res) {
 }
 
 exports.stuDefense = function(req, res) {
-    res.render('stuDefense', {title: 'stuDefense'});
+    if(!req.session.islogin){
+        res.redirect('/');
+    }
+    else if(req.session.user.accLevel !== 2){
+        res.status(403).send('Forbidden');
+    }
+    else
+    {
+        db.query('select * from defense,student where defense.topicId = student.topicId AND student.userName = ?', 
+        [req.session.user.userName],function(err, results) {
+            let daysLeft;
+            if(results.length === 1)
+            {
+                let dateNow = new Date();
+                daysLeft = Math.ceil(((results[0].defDate - dateNow)/(1000 * 60 * 60 * 24)));
+            }
+            else if(results.length === 2)
+            {
+                let dateNow = new Date();
+                daysLeft = Math.ceil(((results[1].defDate - dateNow)/(1000 * 60 * 60 * 24)));
+            }
+            res.render('stuDefense', {error: err, defense: results, moment: moment, daysLeft: daysLeft});
+        });
+    }
 }
 

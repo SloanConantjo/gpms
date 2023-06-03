@@ -24,3 +24,5 @@ update paper set paperPath = 'adasfa',uploadDate = curdate() where paperId = 1;
 
 insert into paper(paperName,stuNum) value('asada','1111');
  select @@IDENTITY;
+
+select * from student, account where student.userName = account.userName and account.userName = ?

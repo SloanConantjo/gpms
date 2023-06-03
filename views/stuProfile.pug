@@ -1,6 +1,63 @@
 extends student 
 
 block content
-  h1= title
-  p Welcome to #{title}
+  if(profile.length > 0)
+    h2 个人中心
+    h3 我的信息
+    p 
+      |姓名: #{profile[0].stuName}
+      br
+      |专业: #{profile[0].stuMajor}
+      br
+      |年级: 
+      if(profile[0].stuGrade === 0)
+        |大一
+      else if(profile[0].stuGrade === 1)
+        |大二
+      else if(profile[0].stuGrade === 2)
+        |大三
+      else if(profile[0].stuGrade === 3)
+        |大四
+      else if(profile[0].stuGrade === 4)
+        |研一
+      else if(profile[0].stuGrade === 5)
+        |研二
+      else
+        |研三
+      br
+      |电话号码: #{profile[0].phoneNum}
+      br
+      |邮箱: #{profile[0].email}
+      br
 
+    button(onclick="document.getElementById('stuModify').showModal()") 修改联系方式
+
+    dialog.dialog-class(id="stuModify")
+      form(action="profile/0", method="post")
+        label(for="phone") 电话
+        input(type="text", name="phone", value=profile[0].phoneNum)
+        br
+        label(for="email") 邮箱
+        input(type="text", name="email", value=profile[0].email)
+        br
+        input(type="submit", value="确定")  
+      button(onclick="document.getElementById('stuModify').close()") 关闭
+
+    h4 账号信息
+    p 
+      |用户名: #{profile[0].userName}
+      br
+      |创建日期: #{moment(profile[0].dateCreated).format('YYYY-MM-DD')}
+
+    button(onclick="document.getElementById('accModify').showModal()") 修改密码
+
+    dialog.dialog-class(id="accModify")
+      form(action="profile/1", method="post")
+        label(for="password0") 原密码
+        input(type="password", name="password0")
+        br
+        label(for="password1") 新密码
+        input(type="password", name="password1")
+        br
+        input(type="submit", value="确定")  
+      button(onclick="document.getElementById('accModify').close()") 关闭

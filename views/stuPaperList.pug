@@ -2,7 +2,7 @@ extends student
 
 block content
   h1 文档管理
-  h6 创建新文档
+  h5 创建新文档:
   form(action="/stu/paper/new", method="post")
     label(for="paper") 名称
     input(type="text" name="paper")
@@ -27,6 +27,4 @@ block content
             td
               if(userName === paper.userName)
                 a(href='/stu/paper/' + paper.paperId)
-                  img(src='/image/edit.png')
-              a(href='#')
-                img(src='/image/delete.png')
+                  img(src='/image/edit.png', style='width: 5%; height: auto;')

@@ -1,6 +1,31 @@
 extends student 
 
 block content
-  h1= title
-  p Welcome to #{title}
-
+  h1= 答辩信息
+  if error 
+    h3 数据查询出错
+  else if defense.length === 0
+    h3 暂时没有答辩信息
+  else
+    h3 答辩信息
+      h4 第一次答辩
+    if(daysLeft > 0)
+      p 答辩时间: #{moment(defense[0].defDate).format('YYYY-MM-DD')}
+      p 答辩地点: #{defense[0].defAddress}
+      p 距离答辩还有 #{daysLeft} 天
+    else 
+      p 答辩地点: #{defense[0].defAddress}
+      h4 答辩成绩
+      p 指导教师打分: #{defense[0].instGrades}
+      p 评阅教师打分: #{defense[0].instGrades-5}
+    if(defense.length === 2)
+      h4 第二次答辩
+      if(daysLeft > 0)
+        p 答辩时间: #{moment(defense[0].defDate).format('YYYY-MM-DD')}
+        p 答辩地点: #{defense[0].defAddress}
+        p 距离答辩还有 #{daysLeft} 天
+      else 
+        p 答辩地点: #{defense[0].defAddress}
+        h4 答辩成绩
+        p 指导教师打分: #{defense[0].instGrades}
+        p 评阅教师打分: #{defense[0].instGrades-5}

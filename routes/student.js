@@ -38,6 +38,8 @@ router.post('/paper/:id', upload.single('file'), stu.stuPaperUpload);
 
 router.get('/profile', stu.stuProfile);
 
+router.post('/profile/:id', stu.stuProfilePost);
+
 router.get('/defense', stu.stuDefense);
 
 module.exports = router;

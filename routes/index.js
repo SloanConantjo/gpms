@@ -39,6 +39,12 @@ router.post('/', function (req, res, next){
                 if (err) throw err;
               })
             }
+            else {
+              json.data[index] = [today, 1];
+              fs.writeFile('./public/documents/visits.json', JSON.stringify(json), err => {
+                if (err) throw err;
+              })
+            }
           }
         }
       })

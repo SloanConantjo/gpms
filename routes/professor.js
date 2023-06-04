@@ -15,7 +15,9 @@ router.get('/defense', prof.profDefense);
 
 router.get('/profile', prof.profProfile);
 
-router.post('/profile', prof.profProfilePost);
+router.post('/profile/editcontact', prof.profProfileEditContact);
+
+router.post('/profile/editpassword', prof.profProfileEditPassword);
 
 router.get('/topic/info', prof.profTopicInfo);
 

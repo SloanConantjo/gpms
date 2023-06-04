@@ -25,7 +25,7 @@ block content
                 option(value="0") 管理员
           div(class="form-group")
             input(type="submit" value="添加" class="btn btn-success pull-right" id='submit_btn')
-        //存在无法关闭的bug
+
         div(id="myAlert" class="alert alert-warning")
           a(href="#" id='close-alert' class="close" data-dismiss="alert") &times;
           strong 警告！
@@ -124,6 +124,7 @@ block content
         }
       })
       .catch((error) => {
+        console.error((error));
       });
     });
     function deleteUser(username) {

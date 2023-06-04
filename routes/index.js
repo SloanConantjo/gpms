@@ -58,8 +58,4 @@ router.post('/', function (req, res, next){
     }
   });
 })
-// router.get('/visit', function(req, res, next) {
-//   // res.render('/documents/visits.json');
-//   res.sendFile('../public/documents/visits.json', {root : __dirname});
-// });
 module.exports = router;

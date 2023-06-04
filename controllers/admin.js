@@ -56,7 +56,7 @@ exports.adminAddAccount = function(req, res) {
 exports.adminDeleteAccount = function(req, res) {
     const username = req.params.username;
     // console.log(username);
-    db.query('DELETE FROM account WHERE userName = ? ', [username], function(err, results) {
+    db.query('DELETE FROM account WHERE userName = ? ', [username], function(err) {
         if (err) {
             throw err;
         } else {

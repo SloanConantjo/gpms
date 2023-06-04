@@ -19,8 +19,7 @@ router.post('/', function (req, res, next){
     } else if (data.length > 0) {
       req.session.user = data[0];
       req.session.islogin = true;
-      date = new Date();
-      today = date.toLocaleDateString();
+      today = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
       fs.readFile('./public/documents/visits.json', 'utf-8', (err, data) => {
         if (err) throw err;
         else {

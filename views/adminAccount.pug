@@ -27,7 +27,7 @@ block content
             input(type="submit" value="添加" class="btn btn-success pull-right" id='submit_btn')
         //存在无法关闭的bug
         div(id="myAlert" class="alert alert-warning")
-          a(href="#" class="close" data-dismiss="alert") &times;
+          a(href="#" id='close-alert' class="close" data-dismiss="alert") &times;
           strong 警告！
           p 用户名已存在
 
@@ -85,12 +85,16 @@ block content
     const passwordInput = document.getElementById('password');
     const typeInput = document.getElementById('type');
     const closeBtn = document.getElementById('window_close');
-
+    const myAlert = document.getElementById('myAlert');
+    const closeAlertBtn = document.getElementById('close-alert');
     addBtn.addEventListener('click', () => {
       addWindow.style.display = 'block';
     });
     closeBtn.addEventListener('click', () => {
       addWindow.style.display = 'none';
+    });
+    closeAlertBtn.addEventListener('click', () => {
+      myAlert.style.display = 'none';
     });
     document.querySelector('form').addEventListener('submit', (event) => {
       event.preventDefault(); // 阻止表单自动提交
@@ -111,15 +115,15 @@ block content
         body: JSON.stringify(data)
       })
       .then((response) => {
-        if (response.ok) {
+        if (response.status < 400) {
           addWindow.style.display = 'none';
           window.location.reload();
         }
+        else {
+          myAlert.style.display = "block";
+        }
       })
       .catch((error) => {
-        //存在无法捕捉error的bug
-        const myAlert = document.getElementById('myAlert');
-        myAlert.style.display = "block";
       });
     });
     function deleteUser(username) {

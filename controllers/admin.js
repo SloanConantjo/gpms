@@ -25,8 +25,8 @@ exports.adminHome = function(req, res) {
             if (err) throw err;
             else {
                 var json = JSON.parse(data);
-                console.log(json.data);
-                res.render('adminHome', {title: 'adminHome', result: json.data});
+                var str = JSON.stringify(json.data)
+                res.render('adminHome', {title: 'adminHome', result: str});
             }
         })
     }

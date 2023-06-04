@@ -2,119 +2,107 @@ extends admin
 
 block content
   h1= title
-  p Welcome to #{title}
   div(id="container" style="min-width:400px;height:400px")
   script.
-    fetch('/')
-    .then(response => response.json())
-    .then(data => {
-      var json = data.result;
-      // 对 users 进行处理
-      // const data = #{data};
-      const chartData = json.map(item => [Date.parse(item[0]), item[1]]);
-      // 使用 Highcharts 绘制图表
-      Highcharts.chart('container', {
-        chart: {
-          type: 'line'
+    var chart = null;
+    var data = #{result};
+    chart = Highcharts.chart('container', {
+      chart: {
+        zoomType: 'x',
+        backgroundColor: '#cbeade'
+      },
+      title: {
+        text: '毕业设计管理系统访问量走势图',
+        style: {
+          fontSize: '24px',
+          fontFamily: 'Arial',
+          fontWeight: 'bold',
+          color: 'black'
+        }
+      },
+      subtitle: {
+        text: document.ontouchstart === undefined ?
+                '鼠标拖动可以进行缩放' : '手势操作进行缩放'
+      },
+      xAxis: {
+        type: 'datetime',
+        dateTimeLabelFormats: {
+          millisecond: '%H:%M:%S.%L',
+          second: '%H:%M:%S',
+          minute: '%H:%M',
+          hour: '%H:%M',
+          day: '%m-%d',
+          week: '%m-%d',
+          month: '%Y-%m',
+          year: '%Y'
         },
+        labels: {
+          style: {
+            fontSize: '16px',
+            fontFamily: 'Arial',
+            color: 'black'
+          }
+        }
+      },
+      tooltip: {
+        dateTimeLabelFormats: {
+          millisecond: '%H:%M:%S.%L',
+          second: '%H:%M:%S',
+          minute: '%H:%M',
+          hour: '%H:%M',
+          day: '%Y-%m-%d',
+          week: '%m-%d',
+          month: '%Y-%m',
+          year: '%Y'
+        }
+      },
+      yAxis: {
         title: {
-          text: 'My Chart'
-        },
-        xAxis: {
-          type: 'datetime'
-        },
-        yAxis: {
-          title: {
-            text: 'Value'
+          text: '访问量',
+          style: {
+            fontSize: '18px'
           }
         },
-        series: [{
-          name: 'My Series',
-          data: chartData
-        }]
-      });
-    })
-    .catch(error => {
-      console.error(error);
+        labels: {
+          style: {
+            fontSize: '18px',
+            fontFamily: 'Arial',
+            color: 'black'
+          }
+        }
+      },
+      legend: {
+        enabled: false
+      },
+      plotOptions: {
+        area: {
+          fillColor: {
+            linearGradient: {
+              x1: 0,
+              y1: 0,
+              x2: 0,
+              y2: 1
+            },
+            stops: [
+              [0, new Highcharts.getOptions().colors[0]],
+              [1, new Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+            ]
+          },
+          marker: {
+            radius: 2
+          },
+          lineWidth: 1,
+          states: {
+            hover: {
+              lineWidth: 1
+            }
+          },
+          threshold: null
+        }
+      },
+      series: [{
+        type: 'area',
+        name: '当日访问量',
+        data: data
+      }]
     });
-
-    // var chart = null;
-    // $.getJSON('./public/documents/visits.json', function (data) {
-    //   alert(data.data);
-    //   chart = Highcharts.chart('container', {
-    //     chart: {
-    //       zoomType: 'x'
-    //     },
-    //     title: {
-    //       text: '毕业设计管理系统访问量'
-    //     },
-    //     subtitle: {
-    //       text: document.ontouchstart === undefined ?
-    //               '鼠标拖动可以进行缩放' : '手势操作进行缩放'
-    //     },
-    //     xAxis: {
-    //       type: 'datetime',
-    //       dateTimeLabelFormats: {
-    //         millisecond: '%H:%M:%S.%L',
-    //         second: '%H:%M:%S',
-    //         minute: '%H:%M',
-    //         hour: '%H:%M',
-    //         day: '%m-%d',
-    //         week: '%m-%d',
-    //         month: '%Y-%m',
-    //         year: '%Y'
-    //       }
-    //     },
-    //     tooltip: {
-    //       dateTimeLabelFormats: {
-    //         millisecond: '%H:%M:%S.%L',
-    //         second: '%H:%M:%S',
-    //         minute: '%H:%M',
-    //         hour: '%H:%M',
-    //         day: '%Y-%m-%d',
-    //         week: '%m-%d',
-    //         month: '%Y-%m',
-    //         year: '%Y'
-    //       }
-    //     },
-    //     yAxis: {
-    //       title: {
-    //         text: '访问量'
-    //       }
-    //     },
-    //     legend: {
-    //       enabled: false
-    //     },
-    //     plotOptions: {
-    //       area: {
-    //         fillColor: {
-    //           linearGradient: {
-    //             x1: 0,
-    //             y1: 0,
-    //             x2: 0,
-    //             y2: 1
-    //           },
-    //           stops: [
-    //             [0, new Highcharts.getOptions().colors[0]],
-    //             [1, new Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-    //           ]
-    //         },
-    //         marker: {
-    //           radius: 2
-    //         },
-    //         lineWidth: 1,
-    //         states: {
-    //           hover: {
-    //             lineWidth: 1
-    //           }
-    //         },
-    //         threshold: null
-    //       }
-    //     },
-    //     series: [{
-    //       type: 'area',
-    //       name: '访问量',
-    //       data: data.data
-    //     }]
-    //   });
-    // });

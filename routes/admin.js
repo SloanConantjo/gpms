@@ -13,4 +13,9 @@ router.post('/account', admin.adminAddAccount);
 
 router.delete('/account/:username', admin.adminDeleteAccount);
 
+router.post('/account/like', admin.adminAccountLike);
+
+router.post('/account/edit', admin.adminAccountEdit);
+
+router.post('/topic/like', admin.adminTopicLike);
 module.exports = router;

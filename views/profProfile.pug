@@ -1,16 +1,107 @@
-extends professor 
+extends professor
 
 block content
-  h1= title
-  p Welcome to #{title}
-  form(action='', method='post')
-    label(for='name') Name:
-    input(type='text', name='name')
-    label(for='age') Age:
-    input(type='number', name='age')
-    label(for='gender') Gender:
-    select(name='gender')
-      option(value='male') Male
-      option(value='female') Female
-    button(type='submit') Submit
+  h2 个人中心
+    h3 我的信息
+    if(profile.length > 0)
+      p
+        |姓名: #{profile[0].profName}
+        br
+        |院系: #{profile[0].profCollege}
+        br
+        |电话号码: #{profile[0].phoneNum}
+        br
+        |邮箱: #{profile[0].email}
+        br
 
+      button(class="btn btn-primary" id="edit-contact") 修改联系方式
+
+      div(class="container" id='edit-contact-window')
+        div(class="form row")
+          form(class="form-horizontal col-md-offset-1" action='profile/editcontact' method='post')
+            button(type="button" class='btn' id='edit-contact-window_close') &times;
+            h3(class="form-title") 修改联系方式
+            div(class="col-md-10 col-md-offset-1")
+              div(class="form-group")
+                i(class="fa fa-phone" aria-hidden="true")
+                input(class="form-control" type="text" name="phoneNum" value=profile[0].phoneNum required autofocus)
+              div(class="form-group")
+                i(class="fa fa-envelope" aria-hidden="true")
+                input(class="form-control" type="text" name="email" value=profile[0].email required)
+              div(class="form-group")
+                input(type="submit" value="修改" class="btn btn-success pull-right" id='submit_btn')
+
+      hr
+      h4 账号信息
+      p
+        |用户名: #{profile[0].userName}
+        br
+        |创建日期: #{moment(profile[0].dateCreated).format('YYYY-MM-DD')}
+
+      button(class="btn btn-primary" id="edit-password") 修改密码
+
+      div(class="container" id='edit-password-window')
+        div(class="form row")
+          form(class="form-horizontal col-md-offset-1")
+            button(type="button" class='btn' id='edit-password-window_close') &times;
+            h3(class="form-title") 修改联系方式
+            div(class="col-md-10 col-md-offset-1")
+              div(class="form-group")
+                i(class="fa fa-key" aria-hidden="true")
+                label 原密码
+                input(class="form-control" type="text" id="oldpassword" required autofocus)
+              div(class="form-group")
+                i(class="fa fa-key" aria-hidden="true")
+                label 新密码
+                input(class="form-control" type="text" id="newpassword" required)
+              div(class="form-group")
+                input(type="submit" value="修改" class="btn btn-success pull-right")
+
+  script.
+    const showEditContact = document.getElementById('edit-contact');
+    const EditContactWindow = document.getElementById('edit-contact-window');
+    showEditContact.addEventListener('click', () => {
+      EditContactWindow.style.display = 'block';
+    });
+
+    const EditContactWindowCloseBtn = document.getElementById('edit-contact-window_close');
+    EditContactWindowCloseBtn.addEventListener('click', () => {
+      EditContactWindow.style.display = 'none';
+    });
+
+    const showEditPassword = document.getElementById('edit-password');
+    const EditPasswordWindow = document.getElementById('edit-password-window');
+    showEditPassword.addEventListener('click', () => {
+      EditPasswordWindow.style.display = 'block';
+    });
+
+    const EditPasswordWindowCloseBtn = document.getElementById('edit-password-window_close');
+    EditPasswordWindowCloseBtn.addEventListener('click', () => {
+      EditPasswordWindow.style.display = 'none';
+    });
+    const EditPasswordForm = document.querySelector('#edit-password-window form');
+    EditPasswordForm.addEventListener('submit', (event) => {
+      event.preventDefault(); // 阻止表单自动提交
+      const oldpassword = document.getElementById('oldpassword');
+      const newpassword = document.getElementById('newpassword');
+      const data = {
+        oldpassword: oldpassword.value,
+        newpassword: newpassword.value
+      };
+      fetch('profile/editpassword', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }).then(function (response) {
+        if (response.status < 400) {
+          EditPasswordWindow.style.display = 'none';
+          window.location.reload();
+        } else {
+          alert('修改密码失败，请检查原密码输入是否正确！');
+        }
+      }).catch(function (error) {
+        console.error(error);
+      });
+    })

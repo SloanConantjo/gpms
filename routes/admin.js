@@ -9,11 +9,11 @@ router.get('/account', admin.adminAccount);
 
 router.get('/topic', admin.adminTopic);
 
-router.post('/account', admin.adminAddAccount);
+router.post('/account/addAccount', admin.adminAddAccount);
 
 router.delete('/account/:username', admin.adminDeleteAccount);
 
-router.post('/account/like', admin.adminAccountLike);
+router.post('/account', admin.adminAccountLike);
 
 router.post('/account/edit', admin.adminAccountEdit);
 

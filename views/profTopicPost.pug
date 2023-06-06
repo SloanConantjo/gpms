@@ -2,5 +2,19 @@ extends professor
 
 block content
   h1= title
-  p Welcome to #{title}
+  div(class="container" id='post-topic')
+    div(class="form row")
+      form(class="form-horizontal col-md-offset-1" action='/prof/topic/post' method='post')
+        h3(class="form-title") 发布课题
+        div(class="col-md-10 col-md-offset-1")
+          div(class="form-group")
+            //i(class="fa fa-user" aria-hidden="true")
+            label 课题名称
+            input(class="form-control" type="text" name="topic_name" id="topic-name" placeholder="请输入课题名称" required autofocus)
+          div(class="form-group")
+            //i(class="fa fa-user" aria-hidden="true")
+            label 课题简介
+            textarea(class="form-control" rows="5" name="topic_profile" id="topic-profile" placeholder="请输入课题简介" required)
+          div(class="form-group")
+            input(type="submit" value="发布" class="btn btn-success col-md-offset-5" id='submit_btn')
 

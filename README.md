@@ -87,12 +87,12 @@
 ## 开发状态
 
 ### /mysql
-[ ] sql
+[   ] sql
 
 [ ] tables
 
 ### /controllers
-[ ] admin
+[ ] admin 
 
 [x] student
 

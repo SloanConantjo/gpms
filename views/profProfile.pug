@@ -29,8 +29,15 @@ block content
                 i(class="fa fa-envelope" aria-hidden="true")
                 input(class="form-control" type="text" name="email" value=profile[0].email required)
               div(class="form-group")
-                input(type="submit" value="修改" class="btn btn-success pull-right" id='submit_btn')
+                input(type="submit" value="修改" class="btn btn-success pull-right")
 
+      hr
+      form(class="form-horizontal" action='profile' method='post')
+        div(class="form-group")
+          label 个人简介
+          textarea(class="form-control" rows="5" name="prof_profile" id="prof_profile") #{profile[0].profile}
+        div(class="form-group")
+          input(type="submit" value="修改" class="btn btn-success pull-right" id='submit_btn')
       hr
       h4 账号信息
       p
@@ -44,7 +51,7 @@ block content
         div(class="form row")
           form(class="form-horizontal col-md-offset-1")
             button(type="button" class='btn' id='edit-password-window_close') &times;
-            h3(class="form-title") 修改联系方式
+            h3(class="form-title") 修改密码
             div(class="col-md-10 col-md-offset-1")
               div(class="form-group")
                 i(class="fa fa-key" aria-hidden="true")

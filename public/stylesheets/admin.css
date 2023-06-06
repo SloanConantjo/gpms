@@ -32,14 +32,16 @@ span img{
     background-color: rgba(255, 255, 255, 1);
     /*background-color: #4cae4c;*/
     width: 600px;
-    height: 300px;
+    height: 500px;
     z-index: 8000;
+    border-radius: 5px;
 }
 
 #window_close {
     position: absolute;
     top: 0;
-    left: 95%;
+    left: 100%;
+    transform: translate(-100%, 0%);
 }
 #myAlert {
     display: none;
@@ -61,10 +63,10 @@ span img{
     justify-content: center;
     align-items: center;
     background-color: rgba(255, 255, 255, 1);
-    /*background-color: #4cae4c;*/
     width: 600px;
     height: 250px;
     z-index: 8000;
+    border-radius: 5px;
 }
 
 #edit_window_close {
@@ -72,4 +74,19 @@ span img{
     top: 0;
     left: 100%;
     transform: translate(-100%, 0%);
+}
+#delete_window {
+    display: none;
+    position: fixed;
+    top: 20%;
+    left: 10%;
+    right: 0;
+    bottom: 0;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 1);
+    width: 400px;
+    height: 180px;
+    z-index: 8000;
+    border-radius: 5px;
 }

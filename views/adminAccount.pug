@@ -17,6 +17,16 @@ block content
             i(class="fa fa-key" aria-hidden="true")
             input(class="form-control" type="password" name="password" id="password" placeholder="请输入密码" required)
           div(class="form-group")
+            i(class="fa fa-user" aria-hidden="true")
+            input(class="form-control" type="text" name="name" id="name" placeholder="请输入用户真实姓名（不可更改）" required)
+          div(class="form-group")
+            i(class="fa fa-id-card" aria-hidden="true")
+            input(class="form-control" type="text" name="id" id="id" placeholder="请输入用户ID（学号或教职号）" required)
+          div(class="form-group")
+            i(class="fa fa-building" aria-hidden="true")
+            input(class="form-control" type="text" name="id" id="college" placeholder="请输入用户所属学院" required)
+
+          div(class="form-group")
             label(class="col-sm-3 control-label") 账号类型
             div(class="col-sm-4")
               select(id="type" name="type" class="form-select show-tick form-control" aria-label="Default select example")
@@ -29,9 +39,9 @@ block content
         div(id="myAlert" class="alert alert-warning")
           a(href="#" id='close-alert' class="close" data-dismiss="alert") &times;
           strong 警告！
-          p 用户名已存在
+          p 用户名或ID已存在
 
-  form(id='search' action='/admin/account/like' method='post' class="form-horizontal col-md-offset-1")
+  form(id='search' action='/admin/account' method='post' class="form-horizontal col-md-offset-1")
     div(class='col-md-3 col-md-push-4')
       div(class="form-group")
         select(id="select-type" name="type" class="form-select show-tick form-control")
@@ -58,20 +68,30 @@ block content
             input(class="form-control" type="password" name="password" id="edit_password" placeholder="请输入新密码" required)
           div(class="form-group")
             input(type="submit" value="修改" class="btn btn-success pull-right" id='edit_btn')
-
+  div(class="container" id='delete_window')
+    div(class="form row")
+      form(class="form-horizontal col-md-offset-1")
+        h3(class="form-title") 删除账户
+        div(class="col-md-11")
+          p 确定要删除吗（删除后关联的课题等全部会一起删除）
+          div(class="form-group")
+            input(type='button' class='btn btn-danger pull-left' id='delete-sure' value='确定')
+            input(type='button' class='btn btn-success pull-right' id='delete-cancel' value='取消')
   table(class='table table-striped table-hover')
     thead
       tr
         th UserName
         th UserLevel
-        th dateCreated
+        th userId
+        th Name
         th operate
     thbody
       each acc in data
         tr
           th #{acc.userName}
           th #{acc.accLevel}
-          th #{acc.dateCreated}
+          th #{acc.Id}
+          th #{acc.Name}
           th
             span(class="btn" onclick=`editUser('${acc.userName}')`)
               img(src='/image/edit.png')
@@ -84,9 +104,15 @@ block content
     const userNameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
     const typeInput = document.getElementById('type');
+    const nameInput = document.getElementById('name');
+    const idInput = document.getElementById('id');
+    const collegeInput = document.getElementById('college');
     const closeBtn = document.getElementById('window_close');
     const myAlert = document.getElementById('myAlert');
     const closeAlertBtn = document.getElementById('close-alert');
+    const deleteWindow = document.getElementById('delete_window');
+    const deleteCancelBtn = document.getElementById('delete-cancel');
+    const deleteSureBtn = document.getElementById('delete-sure');
     addBtn.addEventListener('click', () => {
       addWindow.style.display = 'block';
     });
@@ -101,13 +127,19 @@ block content
       const username = userNameInput.value;
       const password = passwordInput.value;
       const type = typeInput.value;
+      const name = nameInput.value;
+      const id = idInput.value;
+      const college = collegeInput.value;
       const data = {
         username: username,
         password: password,
-        type: type
+        type: type,
+        name: name,
+        id: id,
+        college: college
       };
       // 使用fetch API提交表单数据
-      fetch('account', {
+      fetch('account/addAccount', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -127,8 +159,16 @@ block content
         console.error((error));
       });
     });
+    var deleteuser;
     function deleteUser(username) {
-      fetch(`account/${username}`, {
+      deleteWindow.style.display = 'block';
+      deleteuser = username;
+    }
+    deleteCancelBtn.addEventListener('click', () => {
+      deleteWindow.style.display = 'none';
+    });
+    deleteSureBtn.addEventListener('click', () => {
+      fetch(`account/${deleteuser}`, {
         method: 'DELETE',
       })
       .then((response) => {
@@ -138,8 +178,7 @@ block content
       })
       .catch((error) => {
       });
-    }
-
+    });
     const editWindow = document.getElementById('edit_window');
     const editform = document.getElementById('edit_form');
     const editBtn = document.getElementById('edit_window_close');

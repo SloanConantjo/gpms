@@ -3,7 +3,24 @@ extends professor
 block content
   h1 我的课题
   a(href='/prof/topic/post' type='button' class='btn btn-primary pull-right') 发布课题
-
+  form(class="form-horizontal col-md-offset-1" action='topic/edit_topic' method='post' id='edit_topic')
+    button(type="button" class='btn' id='edit_topic_close') &times;
+    h3(class="form-title") 课题编辑
+    div(class="col-md-10 col-md-offset-1")
+      div(class="form-group")
+        label 课题ID
+        input(class="form-control" type="text" name="topicId" readonly)
+      div(class="form-group")
+        label 课题名称
+        input(class="form-control" type="text" name="topicName" readonly)
+      div(class="form-group")
+        label 课题简介
+        textarea(class="form-control" rows="5" name="topic_profile" id="topic_profile")
+      div(class="form-group")
+        label 课题评分
+        input(class="form-control" type="number" min='0' max='100' step='1' name="topic_grades")
+      div(class="form-group")
+        input(type="submit" value="修改" class="btn btn-success pull-right")
   table(class='table table-striped table-hover')
     thead
       tr
@@ -17,19 +34,32 @@ block content
     thbody
       each acc in data
         tr
-          th #{acc[0]}
-          th #{acc[1]}
-          th #{acc[2]}
-          th #{acc[3]}
-          th #{acc[4]}
-          th #{acc[5]}
+          th #{acc.topicId}
+          th #{acc.topicName}
+          th #{acc.Date}
+          th #{acc.state}
+          th #{acc.stuNumList}
+          th #{acc.grades}
           th
-            span(class="btn" onclick=`editTopic('${acc[0]}')`)
+            span(class="btn" onclick=`editTopic('${acc.topicId}', '${acc.topicName}', '${acc.profile}')`)
               img(src='/image/edit.png')
-            span(class="btn" onclick=`deleteTopic('${acc[0]}')`)
+            span(class="btn" onclick=`deleteTopic('${acc.topicId}')`)
               img(src='/image/delete.png')
 
   script.
+    const edit_topic_window = document.getElementById('edit_topic');
+    const edit_topic_closeBtn = document.getElementById('edit_topic_close');
+    const topic_profile = document.getElementById('topic_profile');
+    edit_topic_closeBtn.addEventListener('click', () =>{
+      edit_topic_window.style.display = 'none';
+    })
+    function editTopic(topicId, topicName, profile) {
+      edit_topic_window.style.display = 'block';
+      edit_topic_window.topicId.value = topicId;
+      edit_topic_window.topicName.value = topicName;
+      edit_topic_window.topic_profile.value = profile;
+      // topic_profile.value =
+    }
     function deleteTopic(topicId) {
       fetch(`topic/${topicId}`, {
         method: 'DELETE',

@@ -2,3 +2,36 @@ extends professor
 
 block content
 
+  div.hello(id = 'hello')
+  div.time(id = 'time')
+
+  script.
+    function updateTime() {
+      var date = new Date();
+      var hours = date.getHours();
+      var minutes = date.getMinutes();
+      var seconds = date.getSeconds();
+      var hello;
+
+      if (hours < 6)
+        hello = '夜深了';
+      else if (hours < 9)
+        hello = '早上好';
+      else if (hours < 12)
+        hello = '上午好';
+      else if (hours < 14)
+        hello = '中午好';
+      else if (hours < 18)
+        hello = '下午好';
+      else
+        hello = '晚上好';
+      
+      hours = hours < 10 ? '0' + hours : hours;
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      seconds = seconds < 10 ? '0' + seconds : seconds;
+      var strTime = hours + ':' + minutes + ':' + seconds;
+
+      document.getElementById('time').innerHTML = strTime;
+      document.getElementById('hello').innerHTML = hello;
+    }
+    setInterval(updateTime, 1000);

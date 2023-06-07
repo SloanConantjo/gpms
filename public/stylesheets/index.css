@@ -38,8 +38,8 @@ body :-ms-input-placeholder {
 }
 .wrapper {
     background: #50a3a2;
-    background: -webkit-linear-gradient(top left, #50a3a2 0%, #53e3a6 100%);
-    background: linear-gradient(to bottom right, #50a3a2 0%, #53e3a6 100%);
+    background: -webkit-linear-gradient(top left, #7F7FD5 0%, #91EAE4 100%);
+    background: linear-gradient(to bottom right, #7F7FD5 0%, #91EAE4 100%);
     opacity: 0.8;
     position: absolute;
     top: 50%;
@@ -102,7 +102,7 @@ form input:hover {
 form input:focus {
     background-color: white;
     width: 300px;
-    color: #53e3a6;
+    color: #7F7FD5;
 }
 form button {
     -webkit-appearance: none;
@@ -112,7 +112,7 @@ form button {
     background-color: white;
     border: 0;
     padding: 10px 15px;
-    color: #53e3a6;
+    color: #7F7FD5;
     border-radius: 3px;
     width: 250px;
     cursor: pointer;
@@ -121,7 +121,7 @@ form button {
     transition-duration: 0.25s;
 }
 form button:hover {
-    background-color: #f5f7f9;
+    background-color: #f5f6f9;
 }
 
 #alert {

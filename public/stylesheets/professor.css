@@ -1,4 +1,4 @@
-#edit-contact-window, #edit-password-window{
+#edit-contact-window, #edit-password-window, #edit_topic{
     display: none;
     position: fixed;
     left: 50%;
@@ -10,7 +10,7 @@
     border-radius: 5px;
 }
 
-#edit-contact-window_close,  #edit-password-window_close{
+#edit-contact-window_close, #edit-password-window_close, #edit_topic_close{
     position: absolute;
     top: 0;
     left: 100%;
@@ -29,4 +29,11 @@ span img{
     top: 0;
     height: 100%;
     width: 100%;
+}
+#edit_topic {
+    width: 450px;
+    height: 480px;
+}
+#topic_profile {
+    resize: none;
 }

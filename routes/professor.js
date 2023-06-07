@@ -10,6 +10,8 @@ router.get('/topic', prof.profTopic);
 
 router.delete('/topic/:topicId', prof.profDeleteTopic);
 
+router.post('/topic/edit_topic', prof.profTopicEdit);
+
 router.get('/students', prof.profStudents);
 
 router.get('/paper', prof.profPaper);

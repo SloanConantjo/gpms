@@ -173,15 +173,18 @@ exports.adminAccountLike = function(req, res) {
     {
         const type = req.body.type;
         const like = req.body.like;
-        var query0 = `SELECT account.userName AS userName, account.accLevel AS accLevel, administrator.adminNum AS Id, ` +
-            `administrator.adminName AS Name FROM account, administrator WHERE account.accLevel = 0 AND account.userName` +
-            `= administrator.userName AND (administrator.adminName LIKE '%${like}%' OR administrator.userName LIKE '%${like}%')`;
-        var query1 = `SELECT account.userName AS userName, account.accLevel AS accLevel, professor.profNum AS Id, ` +
-            `professor.profName AS Name FROM account, professor WHERE account.accLevel = 1 AND account.userName = ` +
-            `professor.userName AND (professor.profName LIKE '%${like}%' OR professor.userName LIKE '%${like}%')`;
-        var query2 = `SELECT account.userName AS userName, account.accLevel AS accLevel, student.stuNum AS Id, ` +
-            `student.stuName AS Name FROM account, student WHERE account.accLevel = 2 AND account.userName = ` +
-            `student.userName AND (student.stuName LIKE '%${like}%' OR student.userName LIKE '%${like}%')`;
+        var query0 = `SELECT account.userName AS userName, account.accLevel AS accLevel, administrator.adminNum ` +
+        `AS Id, administrator.adminName AS Name FROM account, administrator WHERE account.accLevel = 0 AND ` +
+        `account.userName = administrator.userName AND (administrator.adminName LIKE '%${like}%' `+
+        `OR administrator.userName LIKE '%${like}%' OR administrator.adminNum LIKE '%${like}%')`;
+        var query1 = `SELECT account.userName AS userName, account.accLevel AS accLevel, professor.profNum ` +
+            `AS Id, professor.profName AS Name FROM account, professor WHERE account.accLevel = 1 AND `+
+            `account.userName = professor.userName AND (professor.profName LIKE '%${like}%' ` +
+            `OR professor.userName LIKE '%${like}%' OR professor.profNum LIKE '%${like}%')`;
+        var query2 = `SELECT account.userName AS userName, account.accLevel AS accLevel, student.stuNum ` +
+            `AS Id, student.stuName AS Name FROM account, student WHERE account.accLevel = 2 AND ` +
+            `account.userName = student.userName AND (student.stuName LIKE '%${like}%' ` +
+            `OR student.userName LIKE '%${like}%' OR student.stuNum LIKE '%${like}%')`;
         if (type == 3) {
             var query = query0 + ' UNION ' + query1 + ' UNION ' + query2;
             db.query(query, function(err, results) {

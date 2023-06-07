@@ -31,8 +31,9 @@ span img{
     width: 100%;
 }
 #edit_topic {
+    padding: 20px;
     width: 450px;
-    height: 480px;
+    height: 500px;
 }
 #topic_profile {
     resize: none;

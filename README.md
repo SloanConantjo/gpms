@@ -79,72 +79,82 @@
 
 ### Defense
 * defId
-* instGrades 指导教师评分
-* profGrades 评阅教师评分????
+* finalGrades 最终评分
 * defDate 答辩日期+时间
 * **topicID**
+
+### defGradeGroup
+* defId
+* profNum
+* grades
 
 ## 开发状态
 
 ### /mysql
-[   ] sql
+[ ] sql
 
 [ ] tables
 
 ### /controllers
 [ ] admin 
 
-[x] student
+[ ] student
 
 [ ] professor
 
 ### /routes
 [ ] admin
 
-[x] student
+[ ] student
 
 [ ] professor 
 
 ### /views
 
 #### 登录页面
-[ ] login
+[o] login
 
 #### admin
 [ ] adminHome
 
-[ ] adminAccount
+[o] adminAccount
 
 #### student
-[x] stuHome
+[o] stuHome
 
-[x] stuProfile 管理个人信息，修改密码
+[o] stuProfile 管理个人信息，修改密码
 
-[x] stuTopicList 选题列表
+[o] stuTopicList 选题列表
 
- ├──[x] stuTopicInfo 选题详情页
+ ├──[o] stuTopicInfo 选题详情页
 
- └──[x] stuTopicSelect
+ └──[o] stuTopicSelect
 
-[x] stuTopic 显示已选课题信息/进度/成绩
+[o] stuTopic 显示已选课题信息/进度/成绩
 
-[x] stuPaper
+[o] stuPaper
 
-[x] stuDefense
+[o] stuDefense
 
 #### Porfessor
 [ ] profHome
 
-[ ] proProfile
+[o] profProfile
 
-[ ] proTopic
+[x] profTopic
 
- ├──[ ] proTopicInfo
+ ├──[x] profTopicInfo
 
- └──[ ] proTopicPost
+ └──[x] profTopicPost
 
-[ ] proStudents
+[ ] profStudents
 
-[ ] proPaper
+[ ] profPaper
 
-[ ] proDefense
+ ├──[ ] profPaperList
+
+[ ] profDefense
+
+ ├──
+ 
+答辩：教师需要邀请其他教师参加答辩评分，同时指定答辩时间地点

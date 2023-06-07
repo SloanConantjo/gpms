@@ -1,7 +1,7 @@
 -- Active: 1685360827939@@127.0.0.1@3306@gpms
 -- 使用admin账号登录，不需要在后端添加账号（添加了也找不到）
 insert into Account value('admin', 'admin', '2023-06-06', '0');
-insert into administrator value ('0000', 'admin', '管理员')
+insert into administrator value ('0000', 'admin', '管理员');
 -- 项目完成后只用上面两条
 insert into Account value('a1', '1234', '2022-04-02', '0');
 insert into Account value('a2', '12345', '2022-04-03', '0');

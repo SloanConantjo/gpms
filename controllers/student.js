@@ -1,11 +1,6 @@
 const db = require("../mysql/sql");
 const moment = require('moment');
-// const Busboy = require('busboy');
-const path = require('path');
-const fs = require('fs');
-const multer = require('multer')
-
-const upload = multer({ dest: './public/documents' });
+const async = require('async');
 
 exports.stuHome = function(req, res) {
     if(!req.session.islogin){
@@ -25,36 +20,37 @@ exports.stuHome = function(req, res) {
             'student.topicId = topic.topicId and student.userName = ?)as stu '+
             'where stu.stuNum = paper.stuNum ' +
             'order by paper.uploadDate desc limit 1;';
-        let topicResult, paperResult;
+        let defQuery = 'select * from defense,student where defense.topicId = student.topicId AND student.userName = ?';
+        let daysLeft;
 
-        db.query(topicQuery,[req.session.user.userName],
-            function(err, results) {
-                topicResult = results;
-                // console.log(results);
-            });
-        db.query(paperQuery,[req.session.user.userName], 
-            function(err, results) {
-                paperResult = results;
-                // console.log(results);
-            });
+        async.parallel({
+            topic: function(callback) {
+                db.query(topicQuery,[req.session.user.userName],callback);
+            },
+            paper: function(callback) {
+                db.query(paperQuery,[req.session.user.userName],callback);
+            },
+            defense: function(callback) {
+                db.query(defQuery,[req.session.user.userName],callback);
+            }
+        }, 
         
-        db.query('select * from defense,student where defense.topicId = student.topicId AND student.userName = ?', 
-        [req.session.user.userName],function(err, results) {
-            let daysLeft;
-            if(results.length === 1)
+        function(err, results) {
+            //计算剩余天数
+            if(results.defense[0].length === 1)
             {
                 let dateNow = new Date();
-                daysLeft = Math.ceil(((results[0].defDate - dateNow)/(1000 * 60 * 60 * 24)));
+                daysLeft = Math.ceil(((results.defense[0][0].defDate - dateNow)/(1000 * 60 * 60 * 24)));
             }
-            else if(results.length === 2)
+            else if(results.defense[0].length === 2)
             {
                 let dateNow = new Date();
-                daysLeft = Math.ceil(((results[1].defDate - dateNow)/(1000 * 60 * 60 * 24)));
+                daysLeft = Math.ceil(((results.defense[0][1].defDate - dateNow)/(1000 * 60 * 60 * 24)));
             }
-            res.render('stuHome', {error: err, defense: results, moment: moment, 
-                daysLeft: daysLeft, topic: topicResult, paper: paperResult});
+
+            res.render('stuHome', {error: err, defense: results.defense[0], moment: moment, 
+                daysLeft: daysLeft, topic: results.topic[0], paper: results.paper[0]});
         });
-    
     }
 }
 
@@ -75,18 +71,19 @@ exports.stuTopic = function(req, res) {
             'student.topicId = topic.topicId and student.userName = ?)as stu '+
             'where stu.stuNum = paper.stuNum ' +
             'order by paper.uploadDate desc limit 1;';
-        let topicResult, paperResult;
-        db.query(topicQuery,[req.session.user.userName],
-            function(err, results) {
-                topicResult = results;
-                console.log(results);
-            });
-        db.query(paperQuery,[req.session.user.userName], 
-            function(err, results) {
-                paperResult = results;
-                console.log(results);
-                res.render('stuTopic', {topic: topicResult, paper: paperResult});
-            });
+            
+        async.parallel({
+            topic: function(callback) {
+                db.query(topicQuery,[req.session.user.userName],callback);
+            },
+            paper: function(callback) {
+                db.query(paperQuery,[req.session.user.userName],callback);
+            }
+        }, 
+        
+        function(err, results) {
+            res.render('stuTopic', {error: err, topic: results.topic[0], paper: results.paper[0]});
+        });
     }
 }
 
@@ -106,7 +103,7 @@ exports.stuPaperList = function(req, res) {
         'order by paper.uploadDate desc;';
         db.query(paperQuery,[req.session.user.userName], 
             function(err, results) {
-                res.render('stuPaperList', {papers: results, moment: moment, userName: req.session.user.userName});
+                res.render('stuPaperList', {error: err, papers: results, moment: moment, userName: req.session.user.userName});
             });
     }
 }
@@ -123,7 +120,7 @@ exports.stuPaper = function(req, res) {
         let paperQuery = 'select * from paper where paperId = ?;';
         db.query(paperQuery,[req.params.id], 
             function(err, results) {
-                res.render('stuPaper', {paper: results, moment: moment, userName: req.session.user.userName});
+                res.render('stuPaper', {error: err, paper: results, moment: moment, userName: req.session.user.userName});
             });
     }
 }
@@ -137,7 +134,6 @@ exports.stuPaperNew = function(req, res) {
     }
     else
     {
-        console.log(req.body);
         let stuQuery = 'select stuNum from student where userName = ?';
         let paperQuery = 'insert into paper(paperName,stuNum) value(?,?);';
         db.query(stuQuery, [req.session.user.userName],function(err, results) {
@@ -177,7 +173,7 @@ exports.stuProfile = function(req, res) {
         accQuery = 'select * from student, account '+
         'where student.userName = account.userName and account.userName = ?';
         db.query(accQuery, [req.session.user.userName], function(err, results) {
-            res.render('stuProfile', {profile: results, moment: moment});
+            res.render('stuProfile', {error: err, profile: results, moment: moment});
         });
     }
 }
@@ -235,19 +231,24 @@ exports.stuTopicInfo = function(req, res) {
         let stuQuery = 'select topicId from student where userName = ?';
         let topicSelected = false;
 
-        db.query(stuQuery, [req.session.user.userName], function(err, results) {
-            if(results.length>0)
+        async.parallel({
+            stu: function(callback) {
+                db.query(stuQuery, [req.session.user.userName],callback);
+            },
+            topic: function(callback) {
+                db.query(topicQuery, [req.params.id],callback);
+            }
+        }, 
+        
+        function(err, results) {
+            if(results.stu[0].length>0)
             {
-                console.log(results[0].topicId);
-                if(results[0].topicId !== null)
+                if(results.stu[0][0].topicId !== null)
                     topicSelected = true;
             }
-    });
-
-        db.query(topicQuery, [req.params.id],function(err, results) {
-                console.log(topicSelected);
-                res.render('stuTopicInfo', {error: err, data: results, selected:topicSelected});
+            res.render('stuTopicInfo', {error: err, data: results.topic[0], selected:topicSelected});
         });
+
     }
 }
 
@@ -295,12 +296,9 @@ exports.stuTopicSelectPost = function(req, res) {
     else
     {
         let stuQuery = 'update student set topicId = ? where stuNum = ?';
-        let topicQuery = 'update topic set state = 1 where topicId = ?'
-        console.log(req.body);
         for(let i = 0; req.body['stuNum'+i] !== undefined; i++) {
             db.query(stuQuery, [req.params.id, req.body['stuNum'+i]],function(err, results) {});
         }
-        db.query(topicQuery, [req.params.id],function(err, results) {});
         res.redirect('/stu/topic');
     }
 }

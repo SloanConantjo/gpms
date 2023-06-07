@@ -2,13 +2,15 @@
 
 CREATE DATABASE gpms
     DEFAULT CHARACTER SET = 'utf8mb4';
-DROP TABLE `Paper`;
-DROP TABLE `Defense`;
-DROP TABLE `Topic`;
-DROP TABLE `Student`;
-DROP TABLE `Professor`;
-DROP TABLE `Administrator`;
-DROP TABLE `Account`;
+
+DROP TABLE IF EXISTS `defgradegroup`;
+DROP TABLE IF EXISTS `Paper`;
+DROP TABLE IF EXISTS `Defense`;
+DROP TABLE IF EXISTS `Student`;
+DROP TABLE IF EXISTS `Topic`;
+DROP TABLE IF EXISTS `Professor`;
+DROP TABLE IF EXISTS `Administrator`;
+DROP TABLE IF EXISTS `Account`;
 
 CREATE TABLE `Account`(
     `userName` VARCHAR(20),
@@ -20,7 +22,7 @@ CREATE TABLE `Account`(
 );
 
 CREATE TABLE `Professor`(
-    `profNum` CHAR(10),
+    `profNum` ,
     `profName` VARCHAR(20) NOT NULL,
     `profCollege` VARCHAR(20),
     `phoneNum` VARCHAR(20),
@@ -79,8 +81,68 @@ CREATE TABLE `Defense`(
     `defId` INT(10) AUTO_INCREMENT,
     `defDate`DATETIME,
     `defAddress` VARCHAR(50),
-    `instGrades` INT,
+    `finalGrades` INT,
     `topicId` INT(10),
     PRIMARY KEY (`defId`),
     CONSTRAINT FK_DE_TO Foreign Key (`topicId`) REFERENCES `Topic`(`topicId`) ON DELETE CASCADE
 );
+
+CREATE TABLE `defGradeGroup`(
+    `defId` INT(10) AUTO_INCREMENT,
+    `profNum` CHAR(10),
+    `grades` INT,
+    PRIMARY KEY (`defId`,`profNum`),
+    CONSTRAINT FK_DG_DE Foreign Key (`defId`) REFERENCES `Defense`(`defId`) ON DELETE CASCADE,
+    CONSTRAINT FK_DG_PO Foreign Key (`profNum`) REFERENCES `Professor`(`profNum`) ON DELETE CASCADE
+);
+
+-- 更新topic选择状态触发器
+DELIMITER //
+DROP TRIGGER IF EXISTS upTopicState;
+CREATE TRIGGER upTopicState
+AFTER UPDATE 
+ON student FOR EACH ROW
+BEGIN
+    IF OLD.topicId IS NULL THEN
+        UPDATE topic SET state = 1
+            WHERE topicId = NEW.topicId;
+    END IF;
+END //
+DELIMITER;
+
+-- 更新最终成绩，以及topic状态完成触发器
+DELIMITER //
+DROP TRIGGER IF EXISTS upDefGrades;
+CREATE TRIGGER upDefGrades
+AFTER UPDATE 
+ON defGradeGroup FOR EACH ROW
+BEGIN
+    DECLARE gradesLeft INT;
+    DECLARE fGrades INT;
+    DECLARE fTopicId INT;
+    DECLARE defTimes INT;
+
+    SELECT COUNT(*) FROM defGradeGroup
+        WHERE defId = OLD.defId AND grades IS NULL
+        INTO gradesLeft;
+
+    IF gradesLeft = 0 THEN
+        SELECT AVG(grades) FROM defGradeGroup
+            WHERE defId = OLD.defId
+            INTO fGrades;
+        UPDATE defense SET finalGrades = gardes
+            WHERE defId = OLD.defId;
+
+        SELECT topicId FROM defense
+            WHERE defId = OLD.defId
+            INTO fTopicId;
+        SELECT COUNT(*) FROM defense
+            WHERE topicId = fTopicId
+            INTO defTimes;
+        IF grades >= 60 OR defTimes = 2 THEN
+        UPDATE topic SET state = 2
+            WHERE topicId = fTopicId;
+        END IF;
+    END IF;
+END //
+DELIMITER;

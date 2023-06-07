@@ -20,5 +20,4 @@ block content
           td #{moment(topic.postDate).format('YYYY-MM-DD')}
           td
             form(action='/stu/topic/info/'+ topic.topicId, method='GET')
-              //- input(type='hidden', name='topicId', value=topic.topicId)
               button(type='submit') 查看

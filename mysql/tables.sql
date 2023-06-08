@@ -22,7 +22,7 @@ CREATE TABLE `Account`(
 );
 
 CREATE TABLE `Professor`(
-    `profNum` ,
+    `profNum` CHAR(10),
     `profName` VARCHAR(20) NOT NULL,
     `profCollege` VARCHAR(20),
     `phoneNum` VARCHAR(20),
@@ -145,4 +145,4 @@ BEGIN
         END IF;
     END IF;
 END //
-DELIMITER;
+DELIMITER ;

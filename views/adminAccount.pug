@@ -21,11 +21,10 @@ block content
             input(class="form-control" type="text" name="name" id="name" placeholder="请输入用户真实姓名（不可更改）" required)
           div(class="form-group")
             i(class="fa fa-id-card" aria-hidden="true")
-            input(class="form-control" type="text" name="id" id="id" placeholder="请输入用户ID（学号或教职号）" required)
+            input(class="form-control" type="text" name="id" id="id" maxlength='10' placeholder="请输入用户ID（学号或教职号）" required)
           div(class="form-group")
             i(class="fa fa-building" aria-hidden="true")
             input(class="form-control" type="text" name="id" id="college" placeholder="请输入用户所属学院" required)
-
           div(class="form-group")
             label(class="col-sm-3 control-label") 账号类型
             div(class="col-sm-4")

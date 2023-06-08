@@ -19,7 +19,6 @@ exports.adminAccount = function(req, res) {
             'student.stuName AS Name FROM account, student WHERE account.accLevel = 2 AND account.userName = student.userName';
         var query = query1 + ' UNION ' + query2 + ' UNION ' + query3;
         db.query(query, function(err, results){
-            console.log(results);
             res.render('adminAccount', {title: 'Account List', error: err, data: results});
         });
     }

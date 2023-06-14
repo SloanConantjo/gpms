@@ -30,34 +30,48 @@ block content
       |邮箱: #{profile[0].email}
       br
 
-    button(onclick="document.getElementById('stuModify').showModal()") 修改联系方式
+    button(class="btn btn-primary", onclick="document.getElementById('stuModify').showModal()") 修改联系方式
+    br
 
-    dialog.dialog-class(id="stuModify")
-      form(action="profile/0", method="post")
-        label(for="phone") 电话
-        input(type="text", name="phone", value=profile[0].phoneNum)
-        br
-        label(for="email") 邮箱
-        input(type="text", name="email", value=profile[0].email)
-        br
-        input(type="submit", value="确定")  
-      button(onclick="document.getElementById('stuModify').close()") 关闭
+    dialog.dialog-class(id="stuModify", style="border: none; padding: 0;")
+      div(class="col-md-12")
+        div(class="form row")
+          form(class="form-horizontal col-md-offset-1", action="profile/0", method="post")
+            button(type="button", class='btn pull-right', onclick="document.getElementById('stuModify').close()") &times;
+            br
+            h4(class="form-title") 修改联系方式
+            div(class="col-md-10 col-md-offset-1")
+              div(class="form-group")
+                label(name="phone") 电话号码
+                input(class="form-control", type="text", name="phone", value=profile[0].phoneNum, required autofocus)
+              div(class="form-group")
+                label(name="email") 电子邮件
+                input(class="form-control", type="text", name="email", value=profile[0].email, required autofocus)
+              div(class="form-group")
+                input(type="submit", class="btn btn-primary pull-right", value="确定")  
 
     h4 账号信息
     p 
       |用户名: #{profile[0].userName}
       br
       |创建日期: #{moment(profile[0].dateCreated).format('YYYY-MM-DD')}
+      br
 
-    button(onclick="document.getElementById('accModify').showModal()") 修改密码
+    button(class="btn btn-primary", onclick="document.getElementById('accModify').showModal()") 修改密码
 
-    dialog.dialog-class(id="accModify")
-      form(action="profile/1", method="post")
-        label(for="password0") 原密码
-        input(type="password", name="password0")
-        br
-        label(for="password1") 新密码
-        input(type="password", name="password1")
-        br
-        input(type="submit", value="确定")  
-      button(onclick="document.getElementById('accModify').close()") 关闭
+    dialog.dialog-class(id="accModify", style="border: none; padding: 0;")
+      div(class="col-md-12")
+        div(class="form row")
+          form(class="form-horizontal col-md-offset-1", action="profile/1", method="post")
+            button(type="button", class='btn pull-right', onclick="document.getElementById('accModify').close()") &times;
+            br
+            h4(class="form-title") 修改密码
+            div(class="col-md-10 col-md-offset-1")
+              div(class="form-group")
+                label(name="email") 原密码
+                input(class="form-control", type="password", name="password0", placeholder="原密码", required autofocus)
+              div(class="form-group")
+                label(name="email") 新密码
+                input(class="form-control", type="password", name="password1", placeholder="新密码", required autofocus)
+              div(class="form-group")
+                input(type="submit", class="btn btn-primary pull-right", value="确定")  

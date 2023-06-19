@@ -1,6 +1,9 @@
 const db = require("../mysql/sql");
 const moment = require("moment/moment");
 
+
+
+//profHome
 exports.profHome = function(req, res) {
     if(!req.session.islogin){
         res.redirect('/');
@@ -14,10 +17,114 @@ exports.profHome = function(req, res) {
     }
 }
 
-exports.profPaper = function(req, res) {
-    res.render('profPaper', {title: 'profPaper'});
+
+
+//profTopic
+exports.profTopic = function(req, res) {
+    if(!req.session.islogin){
+        res.redirect('/');
+    }
+    else if(req.session.user.accLevel !== 1){
+        res.status(403).send('Forbidden');
+    }
+    else
+    {
+        var username = req.session.user.userName;
+        db.query('SELECT profNum FROM professor WHERE userName = ?', [username], function(err, result) {
+            if (err) throw err;
+            var profNum = result[0].profNum;
+            var query = 'SELECT DATE_FORMAT(topic.postDate, \'%Y-%m-%d\') AS Date, topic.*, GROUP_CONCAT(student.stuNum) AS stuNumList ' +
+                'FROM topic LEFT JOIN student ON topic.topicId = student.topicId WHERE topic.profNum = ? GROUP BY topic.topicId';
+            db.query(query, [profNum], function(err, result1) {
+                if (err) {
+                    throw err;
+                }
+                res.render('profTopic', {data: result1});
+            });
+        });
+    }
 }
 
+exports.profTopicEdit = function(req, res) {
+    if(!req.session.islogin){
+        res.redirect('/');
+    }
+    else if(req.session.user.accLevel !== 1){
+        res.status(403).send('Forbidden');
+    }
+    else
+    {
+        var topicId = req.body.topicId;
+        var profile = req.body.topic_profile;
+        var grade = req.body.topic_grades;
+        if (grade.length > 0) {
+            db.query('UPDATE topic SET profile = ?, grades = ? WHERE topicId = ?', [profile, grade, topicId],function(err) {
+                if (err) throw err;
+                res.redirect('/prof/topic');
+            });
+        }
+        else {
+            db.query('UPDATE topic SET profile = ? WHERE topicId = ?', [profile, topicId],function(err) {
+                if (err) throw err;
+                res.redirect('/prof/topic');
+            });
+        }
+    }
+}
+
+exports.profDeleteTopic = function(req, res) {
+    if(!req.session.islogin){
+        res.redirect('/');
+    }
+    else if(req.session.user.accLevel !== 1){
+        res.status(403).send('Forbidden');
+    }
+    else
+    {
+        const topicId = req.params.topicId;
+        db.query('DELETE FROM topic WHERE topicId = ? ', [topicId], function(err) {
+            if (err) {
+                throw err;
+            } else {
+                res.status(200).send('topic deleted');
+            }
+        });
+    }
+}
+
+exports.profTopicPost = function(req, res) {
+    res.render('profTopicPost', {title: 'profTopicPost'});
+}
+exports.profTopicPostSuccess = function(req, res) {
+    if(!req.session.islogin){
+        res.redirect('/');
+    }
+    else if(req.session.user.accLevel !== 1){
+        res.status(403).send('Forbidden');
+    }
+    else
+    {
+        var username = req.session.user.userName;
+        var topic_name = req.body.topic_name;
+        var topic_profile = req.body.topic_profile;
+        db.query('SELECT profNum FROM professor WHERE userName = ?', [username], function(err, result) {
+            if (err) throw err;
+            db.query('INSERT INTO topic(topicName, profile, profNum) VALUES (?, ?, ?)',
+                [topic_name, topic_profile, result[0].profNum], function(err) {
+                    if (err) throw err;
+                    res.redirect('/prof/topic');
+                });
+        });
+    }
+}
+//
+exports.profTopicInfo = function(req, res) {
+    res.render('profTopicInfo', {title: 'profTopicInfo'});
+}
+
+
+
+//profProflie
 exports.profProfile = function(req, res) {
     if(!req.session.islogin){
         res.redirect('/');
@@ -35,6 +142,7 @@ exports.profProfile = function(req, res) {
         });
     }
 }
+
 exports.profProfileEdit = function(req, res) {
     if(!req.session.islogin){
         res.redirect('/');
@@ -54,6 +162,7 @@ exports.profProfileEdit = function(req, res) {
         });
     }
 }
+
 exports.profProfileEditContact = function(req, res) {
     if(!req.session.islogin){
         res.redirect('/');
@@ -101,109 +210,87 @@ exports.profProfileEditPassword = function(req, res) {
     }
 }
 
+
+
+//profStudents
 exports.profStudents = function(req, res) {
-    res.render('profStudents', {title: 'profStudents'});
-}
-
-exports.profTopic = function(req, res) {
     if(!req.session.islogin){
         res.redirect('/');
     }
     else if(req.session.user.accLevel !== 1){
         res.status(403).send('Forbidden');
     }
-    else
-    {
-        var username = req.session.user.userName;
-        db.query('SELECT profNum FROM professor WHERE userName = ?', [username], function(err, result) {
+    else {
+        var curUser = req.session.user.userName;
+        db.query('select profNum from Professor where userName=?', [curUser], function (err, result1) {
             if (err) throw err;
-            var profNum = result[0].profNum;
-            var query = 'SELECT DATE_FORMAT(topic.postDate, \'%Y-%m-%d\') AS Date, topic.*, GROUP_CONCAT(student.stuNum) AS stuNumList ' +
-                'FROM topic LEFT JOIN student ON topic.topicId = student.topicId WHERE topic.profNum = ? GROUP BY topic.topicId';
-            db.query(query, [profNum], function(err, result1) {
-                if (err) {
-                    throw err;
-                }
-                res.render('profTopic', {data: result1});
+            var curProfNum = result1[0].profNum;
+            var query =
+                'select Student.*,Topic.topicName as topicName from Student,Topic ' +
+                'where Student.topicId = Topic.topicId and Student.topicId in '+ 
+                '(select Topic.topicId from Professor, Topic ' +
+                'where Professor.profNum=Topic.profNum and Professor.profNum=?)'
+            db.query(query, [curProfNum], function (err, result2) {
+                if (err) throw err;
+                res.render('profStudents', { data: result2 });
             });
         });
     }
 }
-exports.profTopicEdit = function(req, res) {
-    if(!req.session.islogin){
-        res.redirect('/');
-    }
-    else if(req.session.user.accLevel !== 1){
-        res.status(403).send('Forbidden');
-    }
-    else
-    {
-        var topicId = req.body.topicId;
-        var profile = req.body.topic_profile;
-        var grade = req.body.topic_grades;
-        if (grade.length > 0) {
-            db.query('UPDATE topic SET profile = ?, grades = ? WHERE topicId = ?', [profile, grade, topicId],function(err) {
-                if (err) throw err;
-                res.redirect('/prof/topic');
-            });
-        }
-        else {
-            db.query('UPDATE topic SET profile = ? WHERE topicId = ?', [profile, topicId],function(err) {
-                if (err) throw err;
-                res.redirect('/prof/topic');
-            });
-        }
-    }
-}
-exports.profDeleteTopic = function(req, res) {
-    if(!req.session.islogin){
-        res.redirect('/');
-    }
-    else if(req.session.user.accLevel !== 1){
-        res.status(403).send('Forbidden');
-    }
-    else
-    {
-        const topicId = req.params.topicId;
-        db.query('DELETE FROM topic WHERE topicId = ? ', [topicId], function(err) {
-            if (err) {
-                throw err;
-            } else {
-                res.status(200).send('topic deleted');
-            }
-        });
-    }
-}
 
-exports.profTopicInfo = function(req, res) {
-    res.render('profTopicInfo', {title: 'profTopicInfo'});
-}
-
-exports.profTopicPost = function(req, res) {
-    res.render('profTopicPost', {title: 'profTopicPost'});
-}
-exports.profTopicPostSuccess = function(req, res) {
+exports.profGradeStuPage = function (req, res) {
     if(!req.session.islogin){
         res.redirect('/');
     }
     else if(req.session.user.accLevel !== 1){
         res.status(403).send('Forbidden');
     }
-    else
-    {
-        var username = req.session.user.userName;
-        var topic_name = req.body.topic_name;
-        var topic_profile = req.body.topic_profile;
-        db.query('SELECT profNum FROM professor WHERE userName = ?', [username], function(err, result) {
+    else {
+        var curStuNum = req.params.stuNum;
+        var query1 =
+            'select Student.stuNum,Student.stuName,Student.stuGrade,Topic.topicName, '+
+            'Topic.topicId,Topic.Grades as topicGrade,Paper.grades as paperGrade,Paper.paperId ' +
+            'from (Student left outer join Topic on Student.topicId=Topic.topicId) ' +
+            'left outer join Paper on Student.stuNum=Paper.stuNum where Student.stuNum=?';
+        db.query(query1, [curStuNum], function (err, result1) {
             if (err) throw err;
-            db.query('INSERT INTO topic(topicName, profile, profNum) VALUES (?, ?, ?)',
-                [topic_name, topic_profile, result[0].profNum], function(err) {
-                    if (err) throw err;
-                    res.redirect('/prof/topic');
-                });
+            var curTopicId = result1[0].topicId;
+            var query2 = 'select finalGrades from Defense where Defense.topicId =? order by defDate';
+            db.query(query2, [curTopicId], function (err, result2) {
+                if (err) throw err;
+                res.render('profGradeStu', { data: result1, defense: result2 });
+            });
         });
     }
 }
+
+exports.profGradeStu = function (req, res) {//not test
+    if(!req.session.islogin){
+        res.redirect('/');
+    }
+    else if(req.session.user.accLevel !== 1){
+        res.status(403).send('Forbidden');
+    }
+    else {
+        var curStuNum = req.params.stuNum;
+        var stuGrade = req.body.stuGrade;
+        db.query('update Student set stuGrade=? where stuNum=?',
+            [stuGrade, curStuNum], function (err, result) {
+                if (err) throw err;
+                res.redirect('/students/' + curStuNum);
+        });
+    }
+}
+
+
+//profPaper
+exports.profPaper = function (req, res) {
+    res.render('profPaper', {title: 'profPaper'});
+}
+
+
+
+//profDefense
 exports.profDefense = function(req, res) {
     res.render('profDefense', {title: 'profDefense'});
 }

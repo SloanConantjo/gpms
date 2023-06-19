@@ -6,18 +6,22 @@ const admin = require("../controllers/admin");
 /* GET home page. */
 router.get('/', prof.profHome);
 
-router.get('/topic', prof.profTopic);
 
-router.delete('/topic/:topicId', prof.profDeleteTopic);
+//profTopic
+router.get('/topic', prof.profTopic);
 
 router.post('/topic/edit_topic', prof.profTopicEdit);
 
-router.get('/students', prof.profStudents);
+router.delete('/topic/:topicId', prof.profDeleteTopic);
 
-router.get('/paper', prof.profPaper);
+router.get('/topic/post', prof.profTopicPost);
 
-router.get('/defense', prof.profDefense);
+router.post('/topic/post', prof.profTopicPostSuccess);
 
+router.get('/topic/info', prof.profTopicInfo);//
+
+
+//profProflie
 router.get('/profile', prof.profProfile);
 
 router.post('/profile', prof.profProfileEdit);
@@ -26,9 +30,22 @@ router.post('/profile/editcontact', prof.profProfileEditContact);
 
 router.post('/profile/editpassword', prof.profProfileEditPassword);
 
-router.get('/topic/info', prof.profTopicInfo);
 
-router.get('/topic/post', prof.profTopicPost);
+//profStudents
+//表头:stuNum，stuName，所选课题的名称，详细信息按钮(原URL)，跳转按钮(超链接)
+router.get('/students', prof.profStudents);//主页
 
-router.post('/topic/post', prof.profTopicPostSuccess);
+router.get('/students/:stuNum', prof.profGradeStuPage);//每个学生的评分页
+
+router.post('/students/:stuNum', prof.profGradeStu);//提交给学生的评分
+
+//profPaper
+router.get('/paper', prof.profPaper);
+
+
+//profDefense
+router.get('/defense', prof.profDefense);
+
+
+
 module.exports = router;

@@ -130,7 +130,7 @@ BEGIN
         SELECT AVG(grades) FROM defGradeGroup
             WHERE defId = OLD.defId
             INTO fGrades;
-        UPDATE defense SET finalGrades = gardes
+        UPDATE defense SET finalGrades = fGrades
             WHERE defId = OLD.defId;
 
         SELECT topicId FROM defense

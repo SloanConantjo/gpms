@@ -38,3 +38,25 @@ span img{
 #topic_profile {
     resize: none;
 }
+
+.modal {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 550px;
+    height: 600px;
+    overflow: auto;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 5px;
+  }
+
+.scoring{
+    background-image: url('/image/grade.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: white;
+    padding-left: 17px; /*图片宽度 + 间距*/
+    background-size: 18px 18px;
+}

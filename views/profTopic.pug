@@ -2,7 +2,7 @@ extends professor
 
 block content
   h1 我的课题
-  a(href='/prof/topic/post' type='button' class='btn btn-primary pull-right') 发布课题
+  a(href='topic/post' type='button' class='btn btn-primary pull-right') 发布课题
   form(class="form-horizontal col-md-offset-1" action='topic/edit_topic' method='post' id='edit_topic')
     button(type="button" class='btn' id='edit_topic_close') &times;
     h3(class="form-title") 课题编辑
@@ -31,17 +31,17 @@ block content
         th members
         th grades
         th operate
-    thbody
+    tbody
       each acc in data
         tr
-          th #{acc.topicId}
-          th #{acc.topicName}
-          th #{acc.Date}
-          th #{acc.state}
-          th #{acc.stuNumList}
-          th #{acc.grades}
+          td #{acc.topicId}
+          td #{acc.topicName}
+          td #{acc.Date}
+          td #{acc.state}
+          td #{acc.stuNumList}
+          td #{acc.grades}
           th
-            span(class="btn" onclick=`editTopic('${acc.topicId}', '${acc.topicName}', '${acc.profile}')`)
+            span(class="btn" onclick=`editTopic('${acc.topicId}', '${acc.topicName}', '${acc.profile}', '${acc.grades}')`)
               img(src='/image/edit.png')
             span(class="btn" onclick=`deleteTopic('${acc.topicId}')`)
               img(src='/image/delete.png')
@@ -53,11 +53,12 @@ block content
     edit_topic_closeBtn.addEventListener('click', () =>{
       edit_topic_window.style.display = 'none';
     })
-    function editTopic(topicId, topicName, profile) {
+    function editTopic(topicId, topicName, profile, grades) {
       edit_topic_window.style.display = 'block';
       edit_topic_window.topicId.value = topicId;
       edit_topic_window.topicName.value = topicName;
       edit_topic_window.topic_profile.value = profile;
+      edit_topic_window.topic_grades.value = grades;
       // topic_profile.value =
     }
     function deleteTopic(topicId) {

@@ -48,6 +48,9 @@ router.get('/paper/:paperId', prof.profViewPaper);// 论文查看：包含评分
 //profDefense
 router.get('/defense', prof.profDefense);
 
+router.post('/defense/new', prof.profPostDefense);
+
+router.post('/defense/:id', prof.profGradeDefense);
 
 
 module.exports = router;

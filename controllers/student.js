@@ -82,6 +82,7 @@ exports.stuTopic = function(req, res) {
         }, 
         
         function(err, results) {
+            // console.log(results.topic[0]);
             res.render('stuTopic', {error: err, topic: results.topic[0], paper: results.paper[0]});
         });
     }
@@ -296,10 +297,46 @@ exports.stuTopicSelectPost = function(req, res) {
     else
     {
         let stuQuery = 'update student set topicId = ? where stuNum = ?';
-        for(let i = 0; req.body['stuNum'+i] !== undefined; i++) {
-            db.query(stuQuery, [req.params.id, req.body['stuNum'+i]],function(err, results) {});
-        }
-        res.redirect('/stu/topic');
+        let success = true;
+
+        db.beginTransaction(function(err) {
+
+            let funcAry = [];
+
+            for(let i = 0; req.body['stuNum'+i] !== undefined; i++) 
+            {
+                let func = function (callback){
+                        db.query(stuQuery, [req.params.id, req.body['stuNum'+i]],function(err, results) {
+                        if(results.affectedRows === 0 || err)
+                        {
+                            console.log(results);
+                            db.rollback();
+                            // db.query('rollback', [],function(err, results){});
+                            success = false;
+                        }
+                        return callback(err, results);
+                    });
+                };
+
+                funcAry.push(func);
+    
+                if(!success)
+                    break;
+                
+            }
+            
+            async.parallel(funcAry, function (err, result) {
+                if (err)
+                {
+                    db.rollback();
+                }
+                else if (success)
+                {
+                    db.commit();
+                }
+                res.redirect('/stu/topic');
+            });
+        });
     }
 }
 

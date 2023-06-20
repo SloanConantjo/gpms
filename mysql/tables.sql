@@ -146,3 +146,25 @@ BEGIN
     END IF;
 END //
 DELIMITER ;
+
+--查询答辩
+DELIMITER //
+DROP PROCEDURE IF EXISTS getDefList;
+CREATE PROCEDURE getDefList(IN user VARCHAR(20))
+BEGIN
+    DECLARE prof CHAR(10);
+    SELECT profNum FROM professor
+        WHERE userName = user LIMIT 1
+        INTO prof;
+
+    SELECT defense.defId as defId, topic.topicName as topicName,
+        defense.defDate as defDate, defense.defAddress as defAddress,
+        defense.finalGrades as finGrades, defGradeGroup.grades as myGrades 
+        FROM defense, topic, defGradeGroup 
+        WHERE defense.defId = defGradeGroup.defID 
+        AND defGradeGroup.profNum = prof 
+        AND topic.topicId = defense.topicId;
+END //
+DELIMITER;
+
+call getDefList('pro1');

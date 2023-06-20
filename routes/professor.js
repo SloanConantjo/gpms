@@ -45,6 +45,7 @@ router.get('/paper', prof.profPaper);
 //profDefense
 router.get('/defense', prof.profDefense);
 
+router.post('/defense/new', prof.profPostDefense);
 
 
 module.exports = router;

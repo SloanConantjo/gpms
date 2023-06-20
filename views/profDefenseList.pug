@@ -1,0 +1,79 @@
+extends professor 
+
+block content
+  h1 答辩管理
+  br
+  button(onclick="document.getElementById('postDefense').showModal()", class="btn btn-success") 发布答辩 
+  br
+
+  dialog.dialog-class(id="postDefense", style="border: none; padding: 0;")
+    div(class="col-md-12")
+      div(class="form row")
+        form(class="form-horizontal col-md-offset-1", action="/defense/new", method="post")
+          button(type="button", class='btn pull-right', onclick="document.getElementById('postDefense').close()") &times;
+          br
+          h4(class="form-title") 发布答辩
+          div(class="col-md-10 col-md-offset-1", id="postDefProf")
+            div(class="form-group")
+              label(name="defDate") 答辩时间
+              input(class="form-control", type="text", name="defDate", required autofocus)
+            div(class="form-group")
+              label(name="defAddress") 答辩地点
+              input(class="form-control", type="text", name="defAddress", required autofocus)
+            div(class="form-group")
+              label(name="topicId") 课题号
+              input(class="form-control", type="text", name="topicId", required autofocus)
+            div(class="form-group")
+              button(type="button", class="btn btn-primary pull-right", onclick="addProf()") 添加教师
+            div(class="form-group")
+              input(type="submit", class="btn btn-primary pull-right", value="确定")  
+
+
+  if(defense.length > 0)
+    table(class='table table-striped') 
+      thead
+        tr
+          th 答辩ID
+          th 所属课题
+          th 答辩日期 
+          th 答辩地点
+          th 最终评分
+          th 我的评分
+      thbody
+        each def in defense 
+          tr 
+            td #{def.defId}
+            td #{def.topicName}
+            td #{moment(def.defDate).format('YYYY-MM-DD')}
+            td #{def.defAddress}
+            td
+              if(def.finGrades)
+                #{def.finGrades}
+              else
+                |-
+            td 
+              form(action="", method="post") 
+              input(type="text", value=def.myGrades)
+              input(type="submit", value="评分")
+
+  script.
+      var num = 0;
+      function addProf() {
+        num++;
+        let form = document.getElementById('postDefProf');
+        let div = document.createElement('div');
+        let input = document.createElement('input');
+        let label = document.createElement('label');
+        div.classList.add('form-group');
+        input.type = 'text';
+        input.classList.add('form-control');
+        input.name = 'prof' + num;
+        input.required = true;
+        input.autofocus = true;
+        label.setAttribute('name','prof' + num);
+        label.innerHTML = '教师职工号:';
+
+        div.appendChild(label);
+        div.appendChild(input);
+        form.insertBefore(div, form.lastChild.previousSibling);
+      }

@@ -292,5 +292,35 @@ exports.profPaper = function (req, res) {
 
 //profDefense
 exports.profDefense = function(req, res) {
-    res.render('profDefense', {title: 'profDefense'});
+    if(!req.session.islogin) {
+        res.redirect('/');
+    }
+    else if(req.session.user.accLevel !== 1) {
+        res.status(403).send('Forbidden');
+    }
+    else {
+        db.query('call getDefList(?);', [req.session.user.userName], function (err, result) {
+            if (err) 
+                throw err;
+            if(result)
+                res.render('profDefenseList', {defense: result[0], moment: moment});
+        });
+    }
+}
+
+exports.profPostDefense = function(req, res) {
+    if(!req.session.islogin) {
+        res.redirect('/');
+    }
+    else if(req.session.user.accLevel !== 1) {
+        res.status(403).send('Forbidden');
+    }
+    else {
+        db.query('call getDefList(?);', [req.session.user.userName], function (err, result) {
+            if (err) 
+                throw err;
+            if(result)
+                res.render('profDefenseList', {defense: result[0], moment: moment});
+        });
+    }
 }

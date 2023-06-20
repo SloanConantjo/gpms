@@ -47,5 +47,7 @@ router.get('/defense', prof.profDefense);
 
 router.post('/defense/new', prof.profPostDefense);
 
+router.post('/defense/:id', prof.profGradeDefense);
+
 
 module.exports = router;

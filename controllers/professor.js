@@ -316,11 +316,84 @@ exports.profPostDefense = function(req, res) {
         res.status(403).send('Forbidden');
     }
     else {
-        db.query('call getDefList(?);', [req.session.user.userName], function (err, result) {
-            if (err) 
-                throw err;
+        db.query('check',
+        [req.body.topicId, req.session.user.userName], function(err, result) {
             if(result)
-                res.render('profDefenseList', {defense: result[0], moment: moment});
+            {
+                let defQuery = 'insert into defense(defDate,defAddress,topicId) value(?,?,?)';
+                let defGroupQuery = 'insert into defgradegroup(defId,profNum) value(LAST_INSERT_ID(),?)';
+                let success = true;
+
+                db.beginTransaction(function(err) {
+
+                    let funcAry = [];
+        
+                    let func = function (callback) {
+                        db.query(defQuery, [req.body.defDate, req.body.defAddress, req.body.topicId],function(err, results) {
+                            if(results.affectedRows === 0 || err)
+                            {
+                                db.rollback();
+                                success = false;
+                            }
+                            return callback(err, results);
+                        });
+                    }
+                    funcAry.push(func);
+
+                    for(let i = 0; req.body['prof'+i] !== undefined; i++) 
+                    {
+                        let func = function (callback){
+                                db.query(defGroupQuery, [req.body['prof'+i]],function(err, results) {
+                                if(results.affectedRows === 0 || err)
+                                {
+                                    console.log(results);
+                                    db.rollback();
+                                    success = false;
+                                }
+                                return callback(err, results);
+                            });
+                        };
+        
+                        funcAry.push(func);
+            
+                        if(!success)
+                            break;
+                        
+                    }
+                    
+                    async.session(funcAry, function (err, result) {
+                        if (err)
+                        {
+                            db.rollback();
+                        }
+                        else if (success)
+                        {
+                            db.commit();
+                        }
+                        res.redirect('/prof/defense');
+                    });
+                });
+            }
+        })
+    }
+}
+
+exports.profGradeDefense = function(req, res) {
+    if(!req.session.islogin) {
+        res.redirect('/');
+    }
+    else if(req.session.user.accLevel !== 1) {
+        res.status(403).send('Forbidden');
+    }
+    else {
+        let profQuery = 'select profNum from professor where userName = ?'
+        let gradeQuery = 'update defgradegroup set grades = ? where defId = ? and profNum = ?';
+        db.query(profQuery, [req.session.user.userName], function (err, result) {
+            if(result)
+            {
+                db.query(gradeQuery, [req.body.grades, req.params.id, result[0].profNum],function (err){});
+            }
         });
+        res.redirect('/prof/defense');
     }
 }

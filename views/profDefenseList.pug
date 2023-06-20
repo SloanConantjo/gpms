@@ -9,7 +9,7 @@ block content
   dialog.dialog-class(id="postDefense", style="border: none; padding: 0;")
     div(class="col-md-12")
       div(class="form row")
-        form(class="form-horizontal col-md-offset-1", action="/defense/new", method="post")
+        form(class="form-horizontal col-md-offset-1", action="/prof/defense/new", method="post")
           button(type="button", class='btn pull-right', onclick="document.getElementById('postDefense').close()") &times;
           br
           h4(class="form-title") 发布答辩
@@ -52,9 +52,9 @@ block content
               else
                 |-
             td 
-              form(action="", method="post") 
-              input(type="text", value=def.myGrades)
-              input(type="submit", value="评分")
+              form(action="/prof/defense/"+def.defId, method="post") 
+                input(type="text", value=def.myGrades, name="grades")
+                input(type="submit", value="评分")
 
   script.
       var num = 0;

@@ -1,6 +1,26 @@
 extends professor 
 
 block content
-  h1= title
-  p Welcome to #{title}
-
+  h1 学生论文
+  table(class='table table-bordered')
+    thead 
+      tr 
+        th 论文所属课题
+        th 学生学号与姓名
+        th 上传日期
+        th 审阅论文
+        th 评分
+    thbody 
+      each paper in data
+        tr 
+          td #{paper.topicName}
+          td #{paper.stuNum}, #{paper.stuName}
+          td #{moment(paper.uploadDate).format('YYYY-MM-DD')}
+          th 
+            span 
+              a(href='/prof/paper/'+paper.paperId type='button' class='btn btn-default')
+                img(src="/image/grade.png")           
+          -if(paper.grades==NULL) 
+            td 未评分
+          -else 
+            td #{paper.grades}

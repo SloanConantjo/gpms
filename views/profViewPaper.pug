@@ -1,0 +1,15 @@
+extends professor 
+
+block content
+  div(style="height:780px;width:90%;overflow:scroll;background:#EEEEEE;") 
+    h1 论文审阅与评分
+    <br>
+    table(class='table')
+      thead 
+        tr 
+          th(width='40') 学生姓名：#{stuName}
+          th(width='60') 论文所属课题：#{topicName}
+    iframe(src=paper[0].paperPath, frameborder="0", height="750" width="100%")
+  
+
+

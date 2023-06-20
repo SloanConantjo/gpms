@@ -38,8 +38,11 @@ router.get('/students/:stuNum', prof.profGradeStuPage);//每个学生的评分�
 
 router.post('/students/:stuNum', prof.profGradeStu);//提交给学生的评分
 
+
 //profPaper
 router.get('/paper', prof.profPaper);
+
+router.get('/paper/:paperId', prof.profViewPaper);// 论文查看：包含评分
 
 
 //profDefense

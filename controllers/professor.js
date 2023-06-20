@@ -1,6 +1,5 @@
 const db = require("../mysql/sql");
-const moment = require("moment/moment");
-
+const moment = require('moment');
 
 
 //profHome
@@ -285,7 +284,53 @@ exports.profGradeStu = function (req, res) {//not test
 
 //profPaper
 exports.profPaper = function (req, res) {
-    res.render('profPaper', {title: 'profPaper'});
+    if(!req.session.islogin){
+        res.redirect('/');
+    }
+    else if(req.session.user.accLevel !== 1){
+        res.status(403).send('Forbidden');
+    }
+    else {
+        var curUser = req.session.user.userName;
+        db.query('select profNum from Professor where userName=?', [curUser], function (err, result1) {
+            if (err) throw err;
+            var curProfNum = result1[0].profNum;
+            var query = 'select profStu.stuName,profStu.topicName,Paper.* from ' +
+                '(select Student.stuName, Student.stuNum,Topic.topicName from Topic,Student ' +
+                'where Topic.topicId=Student.topicId and Topic.profNum=?) profStu, Paper ' +
+                'where profStu.stuNum=Paper.stuNum';
+            db.query(query, [curProfNum], function (err, result2) {
+                if (err) throw err;
+                res.render('profPaper', { data: result2, moment: moment });
+            });
+        });
+    }
+}
+
+exports.profViewPaper = function (req, res) {
+    if(!req.session.islogin){
+        res.redirect('/');
+    }
+    else if(req.session.user.accLevel !== 1){
+        res.status(403).send('Forbidden');
+    }
+    else {
+        var curPaperId = req.params.paperId;
+        db.query('select * from Paper where Paper.paperId=?', [curPaperId], function (err, result1) {
+            if (err) throw err;
+            var curStuNum = result1[0].stuNum;
+            var query = 'select Topic.topicName,Student.stuName from Student,Topic ' +
+                'where Student.topicId=Topic.topicId and Student.stuNum=?';
+            db.query(query, [curStuNum], function (err, result2) {
+                if (err) throw err;
+                res.render('profViewPaper', {
+                    topicName: result2[0].topicName,
+                    stuName: result2[0].stuName,
+                    paper: result1
+                });
+            });
+        });
+    }
 }
 
 

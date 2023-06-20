@@ -32,7 +32,6 @@ router.post('/profile/editpassword', prof.profProfileEditPassword);
 
 
 //profStudents
-//表头:stuNum，stuName，所选课题的名称，详细信息按钮(原URL)，跳转按钮(超链接)
 router.get('/students', prof.profStudents);//主页
 
 router.get('/students/:stuNum', prof.profGradeStuPage);//每个学生的评分页

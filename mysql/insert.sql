@@ -29,4 +29,9 @@ update paper set paperPath = 'adasfa',uploadDate = curdate() where paperId = 1;
 insert into paper(paperName,stuNum) value('asada','1111');
  select @@IDENTITY;
 
-select * from student, account where student.userName = account.userName and account.userName = ?
+select * from student, account where student.userName = account.userName and account.userName = ?;
+
+insert into defense(defDate,defAddress,topicId) value(?,?,?);
+insert into defgradegroup(defId,profNum) value(?,?);
+
+update student set topicId = 1 where stuNum = 1111;

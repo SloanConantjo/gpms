@@ -53,7 +53,6 @@ router.post('/', function (req, res, next){
         res.redirect('/prof');
       else
         res.redirect('/stu');
-      console.log(data[0])
     } else {
       res.render('',{error:true});
     }

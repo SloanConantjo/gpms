@@ -1,0 +1,59 @@
+extends professor 
+
+block content
+  h1  学生毕业设计综合评分
+  <br>
+  table(class='table table-bordered')
+    tbody 
+      tr 
+        th(width='100%' colspan='3') 学号：#{data[0].stuNum}
+      tr
+        th(width='100%' colspan='3') 姓名：#{data[0].stuName} 
+      tr
+        th(width='100' colspan='3')
+      tr 
+        th(width='100%' colspan='3') 所选课题：#{data[0].topicName}
+      tr
+        th(width='100' colspan='3')
+      tr 
+        th(width='100%' colspan='3') 评分
+      tr 
+        th(width='30%') 论文评分
+        th(width='30%') 课题评分
+        th(width='40%') 答辩评分
+      tr 
+        -if(data[0].paperGrade==NULL) 
+          td(width='30%') 未评分 
+        -else 
+          td(width='300%') #{data[0].paperGrade}
+        -if(data[0].topicGrade==NULL) 
+          td(width='30%') 未评分 
+        -else 
+          td(width='30%') #{data[0].topicGrade}
+        -if(defense.length==0)
+          td(width='40%') 未答辩
+        -else if(defense.length==1)
+          -var isPass1=(defense[0].finalGrades>=60)?'通过':'未通过'
+          td(width='40%') #{defense[0].finalGrades} (#{isPass1})
+        -else
+          -var isPass2=(defense[0].finalGrades>=60)?'通过':'未通过'
+          td(width='40%')
+            li 第一次答辩：#{defense[0].finalGrades} (未通过)
+            li 第二次答辩：#{defense[1].finalGrades} (#{isPass2})
+  
+  form(class="form-horizontal" role="form" id='gradeStu' action='students/:stuNum' method='post')
+    div(class="form-group")
+      label(class="col-sm-2 control-label") 综合成绩
+      div(class="col-sm-6")
+        -if(data[0].paperGrade==NULL||data[0].topicGrade==NULL||defense.length==0) 
+          input(class="form-control" id="disabledInput" type="text" placeholder="禁用，请先完成上述评分" disabled)
+        -else if(data[0].stuGrade==NULL)
+          input(class="form-control" type='number' min='0' max='100' step='1' placeholder='在此输入' name='stuGrade')
+        -else 
+          input(class="form-control" type='number' min='0' max='100' step='1' name='stuGrade')
+      -if(data[0].paperGrade!=NULL&&data[0].topicGrade!=NULL&&defense.length!=0)
+        div(class="form-group")
+          input(type="submit" value="提交" class="btn btn-success")
+
+  //- script. 
+    //- document.getElementById('gradeStu').stuGrade.value=data[0].stuNum; 

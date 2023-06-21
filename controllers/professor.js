@@ -13,7 +13,40 @@ exports.profHome = function(req, res) {
     }
     else
     {
-        res.render('profHome', {title: 'profHome'});
+        db.query('select profNum FROM professor WHERE userName = ? LIMIT 1', [req.session.user.userName], function (err, result) {
+            if (err)
+                throw err;
+            if(result) {
+                let topicQuery = 'select count(*) as topics from topic WHERE profNum = ? AND state != 2';
+                let defensQuery = 'select defense.defId as defId, DATE_FORMAT(defense.defDate, \'%Y-%m-%d %H:%i:%s\') as defDate,' +
+                    ' defense.defAddress as defAddress from defense, topic WHERE defense.defDate > now() AND defense.topicId = topic.topicId' +
+                    ' AND topic.profNum = ? ORDER BY defense.defDate LIMIT 1';
+                let paperQuery = 'select count(paper.paperId) as papers from paper, student, topic WHERE paper.grades is NULL AND' +
+                    ' paper.stuNum = student.stuNum AND student.topicId = topic.topicId AND topic.profNum = ?';
+                async.parallel({
+                    topic: function(callback) {
+                        db.query(topicQuery,[result[0].profNum],callback);
+                    },
+                    defense: function(callback) {
+                        db.query(defensQuery,[result[0].profNum],callback);
+                    },
+                    paper: function(callback) {
+                        db.query(paperQuery,[result[0].profNum],callback);
+                    }
+                },
+
+                function(err, results) {
+                    console.log("yes1");
+                    console.log(results.topic[0]);
+                    console.log("yes2");
+                    console.log(results.defense[0]);
+                    console.log("yes3");
+                    console.log(results.paper[0]);
+                    console.log("yes4");
+                    res.render('profHome', {error: err, topic: results.topic[0], defense: results.defense[0], paper: results.paper[0], moment: moment});
+                });
+            }
+        });
     }
 }
 

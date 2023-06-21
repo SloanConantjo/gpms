@@ -32,12 +32,13 @@ block content
                 input(type="submit" value="修改" class="btn btn-success pull-right")
 
       hr
-      form(class="form-horizontal" action='profile' method='post')
-        div(class="form-group")
-          label 个人简介
-          textarea(class="form-control" rows="5" name="prof_profile" id="prof_profile") #{profile[0].profile}
-        div(class="form-group")
-          input(type="submit" value="修改" class="btn btn-success pull-right" id='submit_btn')
+      div(class="container")
+        form(class="form-horizontal" action='profile' method='post')
+          div(class="form-group")
+            label 个人简介
+            textarea(class="form-control" rows="5" name="prof_profile" id="prof_profile") #{profile[0].profile}
+          div(class="form-group")
+            input(type="submit" value="修改" class="btn btn-success pull-right" id='submit_btn')
       hr
       h4 账号信息
       p

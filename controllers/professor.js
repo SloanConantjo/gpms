@@ -1,6 +1,6 @@
 const db = require("../mysql/sql");
 const moment = require("moment/moment");
-
+const async = require('async');
 
 
 //profHome
@@ -303,7 +303,7 @@ exports.profDefense = function(req, res) {
             if (err) 
                 throw err;
             if(result)
-                res.render('profDefenseList', {defense: result[0], moment: moment});
+                res.render('profDefenseList', {prof: result[0], defense: result[1], moment: moment});
         });
     }
 }
@@ -316,10 +316,13 @@ exports.profPostDefense = function(req, res) {
         res.status(403).send('Forbidden');
     }
     else {
-        db.query('check',
+        console.log('int1o');
+        db.query('call checkDefProf(?,?);',
         [req.body.topicId, req.session.user.userName], function(err, result) {
-            if(result)
+            console.log(result[0]);
+            if(result[0][0].chk)
             {
+                console.log('into');
                 let defQuery = 'insert into defense(defDate,defAddress,topicId) value(?,?,?)';
                 let defGroupQuery = 'insert into defgradegroup(defId,profNum) value(LAST_INSERT_ID(),?)';
                 let success = true;
@@ -330,6 +333,7 @@ exports.profPostDefense = function(req, res) {
         
                     let func = function (callback) {
                         db.query(defQuery, [req.body.defDate, req.body.defAddress, req.body.topicId],function(err, results) {
+                            
                             if(results.affectedRows === 0 || err)
                             {
                                 db.rollback();
@@ -360,8 +364,7 @@ exports.profPostDefense = function(req, res) {
                             break;
                         
                     }
-                    
-                    async.session(funcAry, function (err, result) {
+                    async.series(funcAry, function (err, result) {
                         if (err)
                         {
                             db.rollback();
@@ -391,7 +394,10 @@ exports.profGradeDefense = function(req, res) {
         db.query(profQuery, [req.session.user.userName], function (err, result) {
             if(result)
             {
-                db.query(gradeQuery, [req.body.grades, req.params.id, result[0].profNum],function (err){});
+                console.log(req.params.id);
+                db.query(gradeQuery, [req.body.grades, req.params.id, result[0].profNum],function (err,r){
+                    console.log(r);
+                });
             }
         });
         res.redirect('/prof/defense');

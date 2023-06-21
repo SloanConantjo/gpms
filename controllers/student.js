@@ -307,11 +307,14 @@ exports.stuTopicSelectPost = function(req, res) {
             {
                 let func = function (callback){
                         db.query(stuQuery, [req.params.id, req.body['stuNum'+i]],function(err, results) {
-                        if(results.affectedRows === 0 || err)
+                        if(err || !results)
                         {
-                            console.log(results);
                             db.rollback();
-                            // db.query('rollback', [],function(err, results){});
+                            success = false;
+                        }
+                        else if(results.affectedRows === 0)
+                        {
+                            db.rollback();
                             success = false;
                         }
                         return callback(err, results);

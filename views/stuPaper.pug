@@ -6,6 +6,6 @@ block content
     form(action="/stu/paper/"+paper[0].paperId, method="post", enctype="multipart/form-data")
       label(for="file") 上传文档
       input(type="file" name="file")
-      input(type="submit" value="upload")  
+      input(type="submit" value="上传" class="btn btn-primary btn-sm")  
     iframe(src=paper[0].paperPath, frameborder="0", height="800" width="100%") 
 

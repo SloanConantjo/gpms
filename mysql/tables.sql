@@ -139,9 +139,9 @@ BEGIN
         SELECT COUNT(*) FROM defense
             WHERE topicId = fTopicId
             INTO defTimes;
-        IF grades >= 60 OR defTimes = 2 THEN
-        UPDATE topic SET state = 2
-            WHERE topicId = fTopicId;
+        IF fGrades >= 60 OR defTimes = 2 THEN
+            UPDATE topic SET state = 2
+                WHERE topicId = fTopicId;
         END IF;
     END IF;
 END //
@@ -157,6 +157,9 @@ BEGIN
         WHERE userName = user LIMIT 1
         INTO prof;
 
+    SELECT profNum FROM professor
+            WHERE userName = user;
+
     SELECT defense.defId as defId, topic.topicName as topicName,
         defense.defDate as defDate, defense.defAddress as defAddress,
         defense.finalGrades as finGrades, defGradeGroup.grades as myGrades 
@@ -167,4 +170,18 @@ BEGIN
 END //
 DELIMITER ;
 
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS checkDefProf;
+CREATE PROCEDURE checkDefProf(IN topicIdCheck INT(10),IN user VARCHAR(20))
+BEGIN
+    DECLARE prof CHAR(10);
+    SELECT profNum FROM professor WHERE userName = user 
+        INTO prof;
+    SELECT COUNT(*) as chk FROM topic 
+        WHERE topicId = topicIdcheck AND profNum = prof;
+END //
+DELIMITER;
+
 call getDefList('pro1');
+call checkDefProf(1,'pro1');

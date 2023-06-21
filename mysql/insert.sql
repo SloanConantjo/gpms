@@ -34,4 +34,4 @@ select * from student, account where student.userName = account.userName and acc
 insert into defense(defDate,defAddress,topicId) value("2023-06-30 10:35:10","3c101",1);
 insert into defgradegroup(defId,profNum) value(LAST_INSERT_ID(),22);
 
-update student set topicId = 1 where stuNum = 1111;
+update student set topicid = 1 where stuNum = 1111;

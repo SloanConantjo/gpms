@@ -16,13 +16,16 @@ block content
           div(class="col-md-10 col-md-offset-1", id="postDefProf")
             div(class="form-group")
               label(name="defDate") 答辩时间
-              input(class="form-control", type="text", name="defDate", required autofocus)
+              input(class="form-control", type="datetime-local", name="defDate", required autofocus)
             div(class="form-group")
               label(name="defAddress") 答辩地点
               input(class="form-control", type="text", name="defAddress", required autofocus)
             div(class="form-group")
               label(name="topicId") 课题号
               input(class="form-control", type="text", name="topicId", required autofocus)
+            div(class="form-group")
+              label(name="prof0") 教师职工号
+              input(class="form-control", type="text", name="prof0", value=prof[0].profNum, readonly)
             div(class="form-group")
               button(type="button", class="btn btn-primary pull-right", onclick="addProf()") 添加教师
             div(class="form-group")
@@ -35,7 +38,7 @@ block content
         tr
           th 答辩ID
           th 所属课题
-          th 答辩日期 
+          th 答辩时间 
           th 答辩地点
           th 最终评分
           th 我的评分
@@ -44,7 +47,7 @@ block content
           tr 
             td #{def.defId}
             td #{def.topicName}
-            td #{moment(def.defDate).format('YYYY-MM-DD')}
+            td #{moment(def.defDate).format('YYYY-MM-DD HH:mm:ss')}
             td #{def.defAddress}
             td
               if(def.finGrades)
@@ -71,7 +74,7 @@ block content
         input.required = true;
         input.autofocus = true;
         label.setAttribute('name','prof' + num);
-        label.innerHTML = '教师职工号:';
+        label.innerHTML = '教师职工号';
 
         div.appendChild(label);
         div.appendChild(input);

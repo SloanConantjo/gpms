@@ -25,7 +25,7 @@ block content
         -if(data[0].paperGrade==NULL) 
           td(width='30%') 未评分 
         -else 
-          td(width='300%') #{data[0].paperGrade}
+          td(width='30%') #{data[0].paperGrade}
         -if(data[0].topicGrade==NULL) 
           td(width='30%') 未评分 
         -else 
@@ -41,7 +41,7 @@ block content
             li 第一次答辩：#{defense[0].finalGrades} (未通过)
             li 第二次答辩：#{defense[1].finalGrades} (#{isPass2})
   
-  form(class="form-horizontal" role="form" id='gradeStu' action='students/:stuNum' method='post')
+  form(class="form-horizontal" role="form" id='gradeStu' action=data[0].stuNum method='post')
     div(class="form-group")
       label(class="col-sm-2 control-label") 综合成绩
       div(class="col-sm-6")

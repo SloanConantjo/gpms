@@ -108,7 +108,7 @@ BEGIN
             WHERE topicId = NEW.topicId;
     END IF;
 END //
-DELIMITER;
+DELIMITER ;
 
 -- 更新最终成绩，以及topic状态完成触发器
 DELIMITER //
@@ -168,7 +168,7 @@ BEGIN
         AND defGradeGroup.profNum = prof 
         AND topic.topicId = defense.topicId;
 END //
-DELIMITER;
+DELIMITER ;
 
 
 DELIMITER //

@@ -279,8 +279,8 @@ exports.profGradeStuPage = function (req, res) {
         var query1 =
             'select Student.stuNum,Student.stuName,Student.stuGrade,Topic.topicName, '+
             'Topic.topicId,Topic.Grades as topicGrade,Paper.grades as paperGrade,Paper.paperId ' +
-            'from (Student left outer join Topic on Student.topicId=Topic.topicId) ' +
-            'left outer join Paper on Student.stuNum=Paper.stuNum where Student.stuNum=?';
+            'from (Student left outer join Topic on Student.topicId=Topic.topicId) left outer join ' +
+            'Paper on Student.stuNum=Paper.stuNum where Student.stuNum=? order by Paper.uploadDate DESC';
         db.query(query1, [curStuNum], function (err, result1) {
             if (err) throw err;
             var curTopicId = result1[0].topicId;
@@ -306,7 +306,7 @@ exports.profGradeStu = function (req, res) {//not test
         db.query('update Student set stuGrade=? where stuNum=?',
             [stuGrade, curStuNum], function (err, result) {
                 if (err) throw err;
-                res.redirect('/students/' + curStuNum);
+                res.redirect(curStuNum);
         });
     }
 }

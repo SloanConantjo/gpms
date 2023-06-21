@@ -1,9 +1,10 @@
 extends professor 
 
 block content
+  -var hasGrades
   h1  学生毕业设计综合评分
   <br>
-  table(class='table table-bordered')
+  table(class='table table-bordered table-hover')
     tbody 
       tr 
         th(width='100%' colspan='3') 学号：#{data[0].stuNum}
@@ -22,7 +23,9 @@ block content
         th(width='30%') 课题评分
         th(width='40%') 答辩评分
       tr 
-        -if(data[0].paperGrade==null) 
+        -if(data[0].paperId==null)
+          td(width='30%') 未提交论文
+        -else if(data[0].paperGrade==null) 
           td(width='30%') 未评分 
         -else 
           td(width='30%') #{data[0].paperGrade}
@@ -30,30 +33,53 @@ block content
           td(width='30%') 未评分 
         -else 
           td(width='30%') #{data[0].topicGrade}
-        -if(defense.length==0)
+        -if(defense.length==0||defense[0].finalGrades==null)
+          -hasGrades=0;
           td(width='40%') 未答辩
-        -else if(defense.length==1)
-          -var isPass1=(defense[0].finalGrades>=60)?'通过':'未通过'
+        -else if(defense.length==1||defense[1].finalGrades==NULL)
+          -var isPass1=(defense[0].finalGrades>=60)?'通过':'未通过，等待第二次答辩'
+          -hasGrades=(defense[0].finalGrades>=60)?1:0
           td(width='40%') #{defense[0].finalGrades} (#{isPass1})
         -else
           -var isPass2=(defense[0].finalGrades>=60)?'通过':'未通过'
+          -hasGrades=1;
           td(width='40%')
             li 第一次答辩：#{defense[0].finalGrades} (未通过)
             li 第二次答辩：#{defense[1].finalGrades} (#{isPass2})
+      tr 
+        th(width='100%' colspan='3')
+          -if(data[0].paperGrade==null||data[0].topicGrade==null||hasGrades==0) 
+            br
+            form(class="form-horizontal" role="form" action='#' method='post')
+              div(class="form-group")
+                label(class="col-sm-2 control-label") 综合成绩
+                div(class="col-sm-6")
+                  input(class="form-control" id="disabledInput" type="text" placeholder="禁用，请先完成上述评分" disabled)
+          -else if(data[0].stuGrade==null) 
+            form(class='form-inline' role="form" action=data[0].stuNum method='post')
+              div(class='form-group')
+                label(class="control-label") 综合成绩              
+                input(class="form-control" type='number' min='0' max='100' step='1' placeholder='在此输入' name='stuGrade')
+              div(class="form-group col-md-offset-1")
+                input(type="submit" value="提交" class="btn btn-success pull-right")
+          -else 
+            form(class='form-inline' role="form" action=data[0].stuNum method='post' id='altGrade' style='display: none')
+              div(class='form-group')
+                label(class="control-label") 综合成绩：&emsp;&emsp;&emsp;&emsp;               
+                input(class="form-control" type='number' min='0' max='100' step='1' name='stuGrade')
+              div(class="form-group col-md-offset-1")
+                input(type="submit" value="提交" class="btn btn-success pull-right")
+            div(style='display: block' id='viewGrade')
+              label 综合成绩： &emsp;&emsp;&emsp;#{data[0].stuGrade}&emsp;&emsp;&emsp;
+              span(class='btn' onclick=`goEditGrade('${data[0].stuGrade}')`)
+                img(src='/image/edit.png')
   
-  form(class="form-horizontal" role="form" id='gradeStu' action=data[0].stuNum method='post')
-    div(class="form-group")
-      label(class="col-sm-2 control-label") 综合成绩
-      div(class="col-sm-6")
-        -if(data[0].paperGrade==null||data[0].topicGrade==null||defense.length==0) 
-          input(class="form-control" id="disabledInput" type="text" placeholder="禁用，请先完成上述评分" disabled)
-        -else if(data[0].stuGrade==null)
-          input(class="form-control" type='number' min='0' max='100' step='1' placeholder='在此输入' name='stuGrade')
-        -else 
-          input(class="form-control" type='number' min='0' max='100' step='1' name='stuGrade')
-      -if(data[0].paperGrade!=null&&data[0].topicGrade!=null&&defense.length!=0)
-        div(class="form-group")
-          input(type="submit" value="提交" class="btn btn-success")
-
-  //- script. 
-    //- document.getElementById('gradeStu').stuGrade.value=data[0].stuNum; 
+        
+  script.
+    const viewGrade = document.getElementById('viewGrade');
+    const altGrade = document.getElementById('altGrade');
+    function goEditGrade(initGrade){
+      viewGrade.style.display='none';
+      altGrade.style.display='block';
+      altGrade.stuGrade.value=initGrade;
+    }

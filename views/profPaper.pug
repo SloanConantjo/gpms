@@ -2,7 +2,7 @@ extends professor
 
 block content
   h1 学生论文
-  table(class='table table-bordered')
+  table(class='table table-striped table-hover')
     thead 
       tr 
         th 论文题目
@@ -26,3 +26,5 @@ block content
             td 未评分
           -else 
             td #{paper.grades}
+        tr 
+          td(colspan='6')

@@ -39,7 +39,11 @@ block content
           td #{acc.Date}
           td #{acc.state}
           td #{acc.stuNumList}
-          td #{acc.grades}
+          td
+            -if(acc.grades==NULL) 
+              p 未评分 
+            -else
+              p #{acc.grades}
           th
             span(class="btn" onclick=`editTopic('${acc.topicId}', '${acc.topicName}', '${JSON.stringify(acc.profile)}', '${acc.grades}')`)
               img(src='/image/edit.png')

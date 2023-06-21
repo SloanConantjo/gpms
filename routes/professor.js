@@ -18,8 +18,6 @@ router.get('/topic/post', prof.profTopicPost);
 
 router.post('/topic/post', prof.profTopicPostSuccess);
 
-router.get('/topic/info', prof.profTopicInfo);//
-
 
 //profProflie
 router.get('/profile', prof.profProfile);

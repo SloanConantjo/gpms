@@ -44,6 +44,8 @@ router.get('/paper', prof.profPaper);
 
 router.get('/paper/:paperId', prof.profViewPaper);// 论文查看：包含评分
 
+router.post('/paper/:paperId', prof.profGradePaper);
+
 
 //profDefense
 router.get('/defense', prof.profDefense);

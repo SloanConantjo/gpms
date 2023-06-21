@@ -333,6 +333,24 @@ exports.profViewPaper = function (req, res) {
     }
 }
 
+exports.profGradePaper = function (req, res) {
+    if(!req.session.islogin){
+        res.redirect('/');
+    }
+    else if(req.session.user.accLevel !== 1){
+        res.status(403).send('Forbidden');
+    }
+    else {
+        var curPaperId = req.params.paperId;
+        var paperGrade = req.body.paperGrade;
+        db.query('update Paper set grades=? where paperId=?',
+            [paperGrade, curPaperId], function (err, result) {
+                if (err) throw err;
+                res.redirect(curPaperId);   
+        });
+    }
+}
+
 
 
 //profDefense

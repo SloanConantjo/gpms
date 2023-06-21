@@ -5,6 +5,7 @@ block content
   table(class='table table-bordered')
     thead 
       tr 
+        th 论文题目
         th 论文所属课题
         th 学生学号与姓名
         th 上传日期
@@ -13,6 +14,7 @@ block content
     thbody 
       each paper in data
         tr 
+          td #{paper.paperName}
           td #{paper.topicName}
           td #{paper.stuNum}, #{paper.stuName}
           td #{moment(paper.uploadDate).format('YYYY-MM-DD')}

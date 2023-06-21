@@ -17,4 +17,4 @@ block content
     p Tel: #{data[0].phoneNum}, E-mail: #{data[0].email}
   if(!selected)
     form(action='/stu/topic/select/'+ data[0].topicId, method='GET')
-      button(type='submit') 选择课题
+      button(type='submit' class="btn btn-primary") 选择课题

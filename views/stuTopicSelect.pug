@@ -8,15 +8,15 @@ block content
   else
     h1 课题选择申请
     h3= data[0].topicName
-    p 课题号 #{data[0].topicId}
-    h5 成员列表:
+    p 课题号: #{data[0].topicId}
+    h3 成员列表:
 
-    form(action='', method='post')
+    form(class="col-md-4", action='', method='post')
       label(for='stuNum0') 学号:
-      input(type='text' name='stuNum0')
-      button(type='button' onclick='addStudent()') 添加成员
-      button(type='submit') Submit
-    
+      input(type='text' name='stuNum0' class="form-control")
+      button(type='button' onclick='addStudent()' class="btn btn-primary") 添加成员
+      button(type='submit' class="btn btn-primary") 提交
+
     script.
       var num = 0;
       function addStudent() {
@@ -26,6 +26,7 @@ block content
         let label = document.createElement('label'); 
         input.type = 'text';
         input.name = 'stuNum' + num;
+        input.classList.add('form-control');
         label.for = 'stuNum' + num;
         label.innerHTML = '学号:';
         form.insertBefore(label, form.lastChild.previousSibling);

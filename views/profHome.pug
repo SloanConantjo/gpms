@@ -4,6 +4,21 @@ block content
 
   div.hello(id = 'hello')
   div.time(id = 'time')
+  hr
+  if (defense.length > 0)
+    h3 你最近的答辩：#{defense[0].defDate} #{defense[0].defAddress}
+  else
+    h3 暂时无答辩
+  hr
+  if (topic[0].topics > 0)
+    h3 你有#{topic[0].topics}个课题正在进行
+  else
+    h3 暂时无课题进行中
+  hr
+  if (paper[0].papers > 0)
+    h3 你有#{paper[0].papers}篇论文未批阅
+  else
+    h3 暂时无论文待批阅
 
   script.
     function updateTime() {

@@ -21,8 +21,9 @@ block content
   if (defense.length === 0)
     h4 暂无答辩信息
   else
-    h4 距离答辩还有 #{daysLeft} 天
-    h4 答辩地点: #{defense[defense.length-1].defAddress}
+    if(daysLeft > 0)
+      h4 距离答辩还有 #{daysLeft} 天
+      h4 答辩地点: #{defense[defense.length-1].defAddress}
 
   script.
     function updateTime() {

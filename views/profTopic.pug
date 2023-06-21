@@ -41,7 +41,7 @@ block content
           td #{acc.stuNumList}
           td #{acc.grades}
           th
-            span(class="btn" onclick=`editTopic('${acc.topicId}', '${acc.topicName}', '${acc.profile}', '${acc.grades}')`)
+            span(class="btn" onclick=`editTopic('${acc.topicId}', '${acc.topicName}', '${JSON.stringify(acc.profile)}', '${acc.grades}')`)
               img(src='/image/edit.png')
             span(class="btn" onclick=`deleteTopic('${acc.topicId}')`)
               img(src='/image/delete.png')
@@ -57,7 +57,7 @@ block content
       edit_topic_window.style.display = 'block';
       edit_topic_window.topicId.value = topicId;
       edit_topic_window.topicName.value = topicName;
-      edit_topic_window.topic_profile.value = profile;
+      edit_topic_window.topic_profile.value = profile.substring(1,profile.length-1);
       edit_topic_window.topic_grades.value = grades;
       // topic_profile.value =
     }

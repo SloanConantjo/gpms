@@ -117,10 +117,6 @@ exports.profTopicPostSuccess = function(req, res) {
         });
     }
 }
-//
-exports.profTopicInfo = function(req, res) {
-    res.render('profTopicInfo', {title: 'profTopicInfo'});
-}
 
 
 

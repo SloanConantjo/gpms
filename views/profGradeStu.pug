@@ -22,11 +22,11 @@ block content
         th(width='30%') 课题评分
         th(width='40%') 答辩评分
       tr 
-        -if(data[0].paperGrade==NULL) 
+        -if(data[0].paperGrade==null) 
           td(width='30%') 未评分 
         -else 
           td(width='30%') #{data[0].paperGrade}
-        -if(data[0].topicGrade==NULL) 
+        -if(data[0].topicGrade==null) 
           td(width='30%') 未评分 
         -else 
           td(width='30%') #{data[0].topicGrade}
@@ -45,13 +45,13 @@ block content
     div(class="form-group")
       label(class="col-sm-2 control-label") 综合成绩
       div(class="col-sm-6")
-        -if(data[0].paperGrade==NULL||data[0].topicGrade==NULL||defense.length==0) 
+        -if(data[0].paperGrade==null||data[0].topicGrade==null||defense.length==0) 
           input(class="form-control" id="disabledInput" type="text" placeholder="禁用，请先完成上述评分" disabled)
-        -else if(data[0].stuGrade==NULL)
+        -else if(data[0].stuGrade==null)
           input(class="form-control" type='number' min='0' max='100' step='1' placeholder='在此输入' name='stuGrade')
         -else 
           input(class="form-control" type='number' min='0' max='100' step='1' name='stuGrade')
-      -if(data[0].paperGrade!=NULL&&data[0].topicGrade!=NULL&&defense.length!=0)
+      -if(data[0].paperGrade!=null&&data[0].topicGrade!=null&&defense.length!=0)
         div(class="form-group")
           input(type="submit" value="提交" class="btn btn-success")
 

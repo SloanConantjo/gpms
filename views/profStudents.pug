@@ -62,7 +62,9 @@ block content
       stuInfo.stuTopicId.value=topicId;
       stuInfo.stuTopicName.value=topicName;
       stuInfo.stuGrade.value=stuGrade;
-      stuInfo.stuPhone.value=phoneNum;
-      stuInfo.stuEmail.value=email;
+      if(phoneNum==null) stuInfo.stuPhone.value='未知';
+      else stuInfo.stuPhone.value=phoneNum;
+      if(email==null) stuInfo.stuEmail.value='未知';
+      else stuInfo.stuEmail.value=email;
       if(stuGrade==0) stuInfo.stuGrade.value='暂未评分';
     }

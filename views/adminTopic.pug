@@ -11,19 +11,21 @@ block content
   table(class='table table-striped table-hover')
     thead
       tr
-        th TopicId
-        th TopicName
-        th Profile
-        th State
+        th(width='8%') TopicId
+        th(width='16%') TopicName
+        th(width='62') Profile
+        th(width='14%') State
     thbody
       each acc in data
         tr
           th #{acc.topicId}
           th #{acc.topicName}
-          th #{acc.profile}
-          th #{acc.state}
-          th
-            span(class="btn" onclick=`editUser('${acc.topicId}')`)
-              img(src='/image/edit.png')
-            span(class="btn" onclick=`deleteUser('${acc.topicId}')`)
-              img(src='/image/delete.png')
+          th 
+            div(style='white-space: pre-line') #{acc.profile}
+          th 
+            -if(acc.state==0) 
+              p 没有学生选择该课题
+            -else if(acc.state==1)
+              p 该课题正在进行中
+            -else
+              p 该课题已完结

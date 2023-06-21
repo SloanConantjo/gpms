@@ -181,7 +181,7 @@ BEGIN
     SELECT COUNT(*) as chk FROM topic 
         WHERE topicId = topicIdcheck AND profNum = prof;
 END //
-DELIMITER;
+DELIMITER ;
 
 call getDefList('pro1');
 call checkDefProf(1,'pro1');

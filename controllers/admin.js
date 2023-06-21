@@ -274,8 +274,3 @@ exports.adminTopicLike = function(req, res) {
         });
     }
 }
-
-
-
-
-

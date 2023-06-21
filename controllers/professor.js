@@ -377,8 +377,12 @@ exports.profPostDefense = function(req, res) {
         
                     let func = function (callback) {
                         db.query(defQuery, [req.body.defDate, req.body.defAddress, req.body.topicId],function(err, results) {
-                            
-                            if(results.affectedRows === 0 || err)
+                            if(err || !results)
+                            {
+                                db.rollback();
+                                success = false;
+                            }
+                            else if(results.affectedRows === 0)
                             {
                                 db.rollback();
                                 success = false;
@@ -392,7 +396,12 @@ exports.profPostDefense = function(req, res) {
                     {
                         let func = function (callback){
                                 db.query(defGroupQuery, [req.body['prof'+i]],function(err, results) {
-                                if(results.affectedRows === 0 || err)
+                                if(!results || err)
+                                {
+                                    db.rollback();
+                                    success = false;
+                                }
+                                else if(results.affectedRows === 0)
                                 {
                                     console.log(results);
                                     db.rollback();

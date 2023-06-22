@@ -325,12 +325,20 @@ exports.profPaper = function (req, res) {
         db.query('select profNum from Professor where userName=?', [curUser], function (err, result1) {
             if (err) throw err;
             var curProfNum = result1[0].profNum;
-            var query = 'select profStu.stuName,profStu.topicName,Paper.* from ' +
-                '(select Student.stuName, Student.stuNum,Topic.topicName from Topic,Student ' +
+            var query = 'select profStu.stuName,profStu.topicName,Paper.*,profStu.stuGrade as label from ' +
+                '(select Student.stuName, Student.stuNum,Topic.topicName,Student.stuGrade from Topic,Student ' +
                 'where Topic.topicId=Student.topicId and Topic.profNum=?) profStu, Paper ' +
-                'where profStu.stuNum=Paper.stuNum';
+                'where profStu.stuNum=Paper.stuNum order by profStu.stuNum, Paper.uploadDate DESC';
             db.query(query, [curProfNum], function (err, result2) {
                 if (err) throw err;
+                if (result2.length >= 1) {
+                    result2[0].label = 1;
+                    for (var i = 1; i < result2.length; i++) {
+                        if (result2[i].stuNum == result2[i - 1].stuNum)
+                            result2[i].label = 0;
+                        else result2[i].label = 1;//newest
+                    }
+                }
                 res.render('profPaper', { data: result2, moment: moment });
             });
         });
@@ -353,11 +361,16 @@ exports.profViewPaper = function (req, res) {
                 'where Student.topicId=Topic.topicId and Student.stuNum=?';
             db.query(query, [curStuNum], function (err, result2) {
                 if (err) throw err;
-                res.render('profViewPaper', {
-                    topicName: result2[0].topicName,
-                    stuName: result2[0].stuName,
-                    paper: result1
-                });
+                db.query('select paperId from Paper where stuNum=? order by uploadDate DESC',
+                    [curStuNum], function (err, result3) {
+                        if (err) throw err;
+                        res.render('profViewPaper', {
+                            topicName: result2[0].topicName,
+                            stuName: result2[0].stuName,
+                            paper: result1,
+                            newest: result3[0]
+                        });
+                    });
             });
         });
     }

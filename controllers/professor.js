@@ -36,13 +36,6 @@ exports.profHome = function(req, res) {
                 },
 
                 function(err, results) {
-                    console.log("yes1");
-                    console.log(results.topic[0]);
-                    console.log("yes2");
-                    console.log(results.defense[0]);
-                    console.log("yes3");
-                    console.log(results.paper[0]);
-                    console.log("yes4");
                     res.render('profHome', {error: err, topic: results.topic[0], defense: results.defense[0], paper: results.paper[0], moment: moment});
                 });
             }
